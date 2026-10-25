@@ -543,6 +543,12 @@ header,main,footer{overflow-x:clip}
   .crop{display:none}
 }
 .idle,.idle *,.idle *::before,.idle *::after{animation-play-state:paused!important}
+@media (hover:none),(max-width:760px){
+  .grain{display:none}
+  .sticky{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--ink)}
+  #tracklist,.how,footer{content-visibility:auto;contain-intrinsic-size:auto 900px}
+  .cd-free::after,.cd-buy::after,.cd-bonus::after{animation-duration:6s}
+}
 @media(prefers-reduced-motion:reduce){
   .hub-ic .sig{display:none}
   *,*::before,*::after{animation:none!important;transition:none!important}
@@ -819,6 +825,7 @@ async function startDownload() {
     const a = document.createElement('a'); a.href = relZip || ZIP_NAME; a.download = ZIP_NAME;
     document.body.appendChild(a); a.click(); a.remove();
     if (dlTotal != null) setTotal(dlTotal + 1, true, false);
+    hitDownload();
     setDl('download avviato', 1); toast('Download avviato');
     if (isIOS) { const g = document.getElementById('ios'); g.open = true; setTimeout(() => g.scrollIntoView({ behavior: 'smooth', block: 'center' }), 1400); }
     setTimeout(() => setDl('17 tracce · mp3', null), 2500);
@@ -1148,31 +1155,41 @@ const DL_KEY = 'dl056-v2';
 const seen = () => { try { return +localStorage.getItem(DL_KEY) || 0; } catch (e) { return 0; } };
 const remember = n => { try { localStorage.setItem(DL_KEY, String(n)); } catch (e) {} };
 function setTotal(n, animate, confirmed = true) { dlTotal = Math.max(n, seen(), DL_BASE); if (confirmed) remember(dlTotal); showCount(dlTotal, animate); }
-// Conteggio vero: ogni tocco su FREE DOWNLOAD viene registrato su GoatCounter (evento "download") in pochi secondi.
-// GitHub conta i download dello ZIP ma aggiorna il numero con ore di ritardo: serve solo da riserva.
+// Conteggio vero: ogni tocco su FREE DOWNLOAD fa +1 su un contatore pubblico (Abacus) che risponde subito
+// con il totale aggiornato. GoatCounter e GitHub restano come riserva: si mostra sempre il numero più alto.
+const CNT = 'https://abacus.jasoncameron.dev';
+const CNT_KEY = '056-indipendenza/download';
+const AB_START = 21; // download già registrati da GitHub quando è partito il contatore pubblico
 const relCount = rel => { const a = (rel.assets || []).find(x => /\.zip$/i.test(x.name)); return a ? a.download_count : null; };
 const num = v => +String(v ?? '').replace(/\D/g, '') || 0;
-let gcN = 0, ghN = 0;
-function applyCount(animate) { setTotal(DL_BASE + Math.max(gcN, ghN), animate); }
+let abN = 0, gcN = 0, ghN = 0;
+function applyCount(animate) { setTotal(DL_BASE + Math.max(AB_START + abN, gcN, ghN), animate); }
+function hitDownload() {
+  fetch(`${CNT}/hit/${CNT_KEY}`, { cache: 'no-store', keepalive: true })
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(j => { abN = Math.max(abN, num(j.value)); applyCount(true); })
+    .catch(() => {});
+}
 function loadCount() {
   relZip = REL_ZIP;
-  const jobs = [];
-  if (GC_CODE) jobs.push(
-    fetch(`https://${GC_CODE}.goatcounter.com/counter/${encodeURIComponent('evento/download')}.json?t=${Date.now()}`, { cache: 'no-store' })
-      .then(r => r.ok ? r.json() : r.status === 404 ? { count: 0 } : Promise.reject())
-      .then(j => { gcN = Math.max(gcN, num(j.count)); }).catch(() => {}));
-  jobs.push(
+  const jobs = [
+    fetch(`${CNT}/get/${CNT_KEY}?t=${Date.now()}`, { cache: 'no-store' })
+      .then(r => r.ok ? r.json() : Promise.reject()).then(j => { abN = Math.max(abN, num(j.value)); }).catch(() => {}),
     fetch('counts.json?t=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject())
       .then(j => { ghN = Math.max(ghN, num(j.downloads)); }).catch(() => {}),
     fetch(REL_API, { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject())
-      .then(rel => { ghN = Math.max(ghN, num(relCount(rel))); }).catch(() => {}));
+      .then(rel => { ghN = Math.max(ghN, num(relCount(rel))); }).catch(() => {})
+  ];
+  if (GC_CODE) jobs.push(
+    fetch(`https://${GC_CODE}.goatcounter.com/counter/${encodeURIComponent('evento/download')}.json?t=${Date.now()}`, { cache: 'no-store' })
+      .then(r => r.ok ? r.json() : Promise.reject()).then(j => { gcN = Math.max(gcN, num(j.count)); }).catch(() => {}));
   Promise.allSettled(jobs).then(() => applyCount(true));
 }
 if (!window.claude) {
   loadCount();
   // aggiornamento dal vivo mentre la pagina è aperta: se qualcuno scarica, i rulli girano da soli.
-  // ogni 90 s (GitHub concede 60 letture l'ora per visitatore), in pausa quando la scheda non è visibile
-  let liveT = setInterval(() => { if (!document.hidden) loadCount(); }, 90000);
+  // ogni 45 s, in pausa quando la scheda non è visibile
+  let liveT = setInterval(() => { if (!document.hidden) loadCount(); }, 45000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) loadCount(); });
 }
 
