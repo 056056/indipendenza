@@ -1094,6 +1094,25 @@ if ('IntersectionObserver' in window) {
   document.querySelectorAll('header, #download, #copia, #tracklist, .tape, footer').forEach(el => idleIO.observe(el));
 }
 
+// Statistiche visite (GoatCounter: senza cookie, nessun banner necessario). Vuoto = spente
+const GC_CODE = '';
+function track(name) { try { window.goatcounter?.count?.({ path: 'evento/' + name, title: name, event: true }); } catch (e) {} }
+if (GC_CODE && !window.claude) {
+  const g = document.createElement('script');
+  g.async = true; g.src = 'https://gc.zgo.at/count.js'; g.dataset.goatcounter = `https://${GC_CODE}.goatcounter.com/count`;
+  document.head.appendChild(g);
+}
+document.addEventListener('click', e => {
+  const t = e.target.closest('.cd-free, .sticky, .cd-buy, .yt, .tl li[data-n], #logoZone, #cdStage');
+  if (!t) return;
+  if (t.matches('.cd-free, .sticky')) track('download');
+  else if (t.matches('.cd-buy')) track('richiesta-cd');
+  else if (t.matches('.yt')) track('youtube');
+  else if (t.matches('.tl li')) track('anteprima-' + t.dataset.n);
+  else if (t.matches('#logoZone')) track('tocco-056');
+  else track('apri-cd');
+}, { capture: true });
+
 // Contatore download: parte da 56 e somma i download reali che GitHub conta sulla release
 const DL_BASE = 56;
 const REL_API = 'https://api.github.com/repos/056056/indipendenza/releases/tags/v1.0';
@@ -1114,21 +1133,22 @@ const DL_KEY = 'dl056';
 const seen = () => { try { return +localStorage.getItem(DL_KEY) || 0; } catch (e) { return 0; } };
 const remember = n => { try { localStorage.setItem(DL_KEY, String(n)); } catch (e) {} };
 function setTotal(n, animate) { dlTotal = Math.max(n, seen(), DL_BASE); remember(dlTotal); showCount(dlTotal, animate); }
-function loadCount(retry) {
-  fetch(REL_API, { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' })
-    .then(r => r.ok ? r.json() : Promise.reject(r.status))
-    .then(rel => {
-      const a = (rel.assets || []).find(x => /\.zip$/i.test(x.name));
-      if (!a) return;
-      relZip = REL_ZIP;
-      setTotal(DL_BASE + a.download_count, true);
-    })
-    .catch(() => {
-      if (retry) setTimeout(() => loadCount(false), 4000);
-      else if (seen()) { relZip = REL_ZIP; setTotal(seen(), false); }
+// prima il file dello stesso sito (non lo blocca nessun browser), poi GitHub, altrimenti l'ultimo numero visto o 56
+const relCount = rel => { const a = (rel.assets || []).find(x => /\.zip$/i.test(x.name)); return a ? a.download_count : null; };
+function loadCount() {
+  relZip = REL_ZIP;
+  fetch('counts.json?t=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(j => { if (typeof j.downloads !== 'number') throw 0; setTotal(DL_BASE + j.downloads, true); })
+    .catch(() => {})
+    .finally(() => {
+      fetch(REL_API, { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' })
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(rel => { const n = relCount(rel); if (n != null) setTotal(DL_BASE + n, true); })
+        .catch(() => { if (dlTotal == null) setTotal(DL_BASE, false); });
     });
 }
-if (!window.claude) loadCount(true);
+if (!window.claude) loadCount();
 
 // Ruoli: si accendono uno dopo l'altro quando arrivi alla sezione
 const crGrid = document.getElementById('crGrid');

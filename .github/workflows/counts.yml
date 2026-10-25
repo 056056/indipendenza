@@ -1,0 +1,26 @@
+# Ogni 30 minuti salva i download reali in counts.json, letto dal sito dallo stesso dominio
+name: download-counts
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/counts.yml']
+permissions:
+  contents: write
+jobs:
+  counts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Aggiorna counts.json
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          n=$(gh api repos/${{ github.repository }}/releases/tags/v1.0 --jq '[.assets[] | select(.name|endswith(".zip")) | .download_count] | add // 0')
+          echo "{\"downloads\":$n}" > counts.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add counts.json
+          git diff --cached --quiet || (git commit -m "download: $n" && git push)
