@@ -1,4 +1,4 @@
-# Controllo una tantum dei servizi di conteggio (lanciato a mano o da push di questo file)
+# Controllo (v2) una tantum dei servizi di conteggio (lanciato a mano o da push di questo file)
 name: diag-contatori
 on:
   workflow_dispatch:
@@ -15,7 +15,8 @@ jobs:
       - name: Prova i servizi
         run: |
           {
-            echo "== abacus get (chiave vera)"; curl -s -m 20 -i https://abacus.jasoncameron.dev/get/056-indipendenza/download | grep -iE '^HTTP|access-control|^\{' ; echo
+            echo "== abacus get con Origin"; curl -s -m 20 -i -H 'Origin: https://056056.github.io' https://abacus.jasoncameron.dev/get/056-indipendenza/download | grep -iE '^HTTP|access-control|^\{' ; echo
+            echo "== abacus preflight"; curl -s -m 20 -i -X OPTIONS -H 'Origin: https://056056.github.io' -H 'Access-Control-Request-Method: GET' https://abacus.jasoncameron.dev/get/056-indipendenza/download | grep -iE '^HTTP|access-control'; echo
             echo "== abacus hit (chiave di test)"; curl -s -m 20 https://abacus.jasoncameron.dev/hit/056-indipendenza/diagtest; echo
             echo "== abacus hit di nuovo"; curl -s -m 20 https://abacus.jasoncameron.dev/hit/056-indipendenza/diagtest; echo
             echo "== goatcounter counter"; curl -s -m 20 -i -H 'Origin: https://056056.github.io' "https://056.goatcounter.com/counter/evento%2Fdownload.json" | grep -iE '^HTTP|access-control|^\{|count'; echo
@@ -23,4 +24,4 @@ jobs:
           } > diag.txt 2>&1
           cat diag.txt
           git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add diag.txt; git commit -m "diag contatori" && git push
+          git add diag.txt; git commit -m "diag contatori 2" && git push
