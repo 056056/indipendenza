@@ -55,7 +55,7 @@ img{display:block;max-width:100%}
 /* sfondo: foto sbiadita fissa dietro tutta la pagina */
 .backdrop{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:var(--bg)}
 .backdrop img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.2) brightness(.7);opacity:0;transform:scale(1.06);animation:bdIn 2.6s var(--ease) .1s forwards}
-@keyframes bdIn{to{opacity:.26;transform:none}}
+@keyframes bdIn{to{opacity:.42;transform:none}}
 .backdrop::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 20%,transparent 0%,rgba(10,10,11,.55) 55%,var(--bg) 100%),linear-gradient(to bottom,rgba(10,10,11,.2),rgba(10,10,11,.75))}
 @keyframes fadeIn{to{opacity:1}}
 
@@ -247,6 +247,14 @@ h1{display:grid;justify-items:start;font-weight:400}
 .cr-sum span+span::before{content:"· ";color:var(--red)}
 .cr-by{display:flex;align-items:baseline;gap:.7em;font-family:var(--tag);font-size:clamp(28px,4.4vw,36px);line-height:1;color:var(--ink)}
 .cr-by i{font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);margin-right:.4em}
+.head-cap{padding-block:14px 0}
+.logo-zone{position:relative;display:grid;justify-items:center;margin-top:clamp(18px,3vw,30px);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.logo-zone h1{justify-items:center}
+.logo-zone .logo{font-size:clamp(110px,15vw,200px)}
+.logo-zone .hand-t{font-size:clamp(16px,2.4vw,26px);margin:.9em 0 0 .3em}
+.cd-col .case-hint{display:none}
+.dl-extra{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
+.dl-extra .yt{margin-top:0}
 .buy-row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:stretch;width:100%;max-width:520px}
 .buy-row .cb-main,.buy-row .cf-main{font-size:13px;letter-spacing:.12em}
 .buy-row .cb-sub{font-size:9px;letter-spacing:.12em}
@@ -285,7 +293,7 @@ h1{display:grid;justify-items:start;font-weight:400}
 .cd-cta:active{transform:scale(.97)}
 @media (hover:hover){.cd-cta:hover{background:var(--red);border-color:var(--red);box-shadow:0 14px 30px -12px rgba(179,36,28,.8)}.cd-cta:hover b{color:var(--ink);transform:translateX(4px)}}
 .cd-handle{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
-@media(max-width:760px){.buy-row{justify-content:center}.cd-stage{--w:min(45vw,300px)}.cd-stage.is-open .case-pos{translate:calc(var(--w) * -.5) 0}.case.open.pack .cd{transform:translateX(102%)}.cd-irid{opacity:.25}.cd-bonus{justify-content:center}.cr-sum{justify-content:center}.cdx{grid-template-columns:1fr;justify-items:center;text-align:center}.cd-txt{justify-items:center}.cd-spec{margin-inline:auto}.cd-buy{justify-items:center}.cr{justify-items:center}.cr-roles{text-align:center}}
+@media(max-width:760px){.logo-zone .logo{font-size:34vw}.dl-extra{justify-content:center}.buy-row{justify-content:center}.cd-stage{--w:min(45vw,300px)}.cd-stage.is-open .case-pos{translate:calc(var(--w) * -.5) 0}.case.open.pack .cd{transform:translateX(102%)}.cd-irid{opacity:.25}.cd-bonus{justify-content:center}.cr-sum{justify-content:center}.cdx{grid-template-columns:1fr;justify-items:center;text-align:center}.cd-txt{justify-items:center}.cd-spec{margin-inline:auto}.cd-buy{justify-items:center}.cr{justify-items:center}.cr-roles{text-align:center}}
 
 /* canale Telegram */
 .tg{padding-block:22px 0}
@@ -521,7 +529,7 @@ header,main,footer{overflow-x:clip}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .rv.pre{opacity:1;transform:none}
   .paintover{clip-path:none}
-  .backdrop img{opacity:.26}
+  .backdrop img{opacity:.42}
   .hand-t{clip-path:none}
 }
 </style>
@@ -531,59 +539,12 @@ header,main,footer{overflow-x:clip}
 
 
 <div class="grain" aria-hidden="true"></div>
-<div class="backdrop" aria-hidden="true"><img id="bd" src="sfondo.jpg" alt=""></div>
+<div class="backdrop" aria-hidden="true"><img id="bd" src="cover.jpg" alt=""></div>
 
 <header>
     <div class="wrap top"><b>056</b><span class="live"><i></i>Free download</span></div>
 
-  <div class="wrap stage" id="stage">
-    <div class="sleeve" id="sleeve">
-      <span class="crop tl"></span><span class="crop tr"></span><span class="crop bl"></span><span class="crop br"></span>
-      <div class="sleeve-in">
-        <img src="cover.jpg" alt="Copertina di IN.DIPENDENZA: cartellone abbandonato con la scritta 056 dipinta a mano, una palma e capannoni sullo sfondo">
-        <svg class="paintover" viewBox="0 0 1000 667" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Free download">
-          <defs>
-            <filter id="worn" x="-4%" y="-10%" width="108%" height="120%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="7" result="warp"/>
-              <feDisplacementMap in="SourceGraphic" in2="warp" scale="9" xChannelSelector="R" yChannelSelector="G" result="rough"/>
-              <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="4" seed="3" result="grain"/>
-              <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -9 0 0 0 6.2" result="holes"/>
-              <feComposite in="rough" in2="holes" operator="in"/>
-            </filter>
-          </defs>
-          <g filter="url(#worn)" transform="rotate(-3 500 120)">
-            <text x="46" y="168" textLength="905" lengthAdjust="spacingAndGlyphs">FREE DOWNLOAD</text>
-          </g>
-        </svg>
-        <div class="scan"></div>
-        <div class="glare" id="glare"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="wrap titling">
-    <div class="cap"><span>arte libera dalla strada per le strade</span><span class="cap-r">IN.DIPENDENZA <b>0.56</b></span></div>
-    <a class="take" id="logoZone" href="#" target="_blank" rel="noopener" aria-label="Scarica gratis l'album IN.DIPENDENZA di 056">
-      <h1 aria-label="056 – IN.DIPENDENZA">
-        <span class="logo" id="logo" aria-hidden="true">056</span>
-        <span class="hand-t" aria-hidden="true">In.dipendenza</span>
-      </h1>
-      <span class="dl-line" aria-hidden="true">
-        <span class="dl-top">
-          <span class="dl-word"><svg class="dl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M12 3v14M6 12l6 6 6-6"/></svg><span id="dlWord">scarica l'album</span></span>
-          <span class="dl-note">free download</span>
-        </span>
-        <span class="dl-rule"><i></i></span>
-        <span class="dl-meta">17 tracce · 2027 · copertina inclusa</span>
-        <span class="dl-count" id="dlCount" hidden><b id="dlNum">56</b> download</span>
-      </span>
-      <svg class="wet" id="wet" aria-hidden="true"><g id="wetDrips" stroke="currentColor" stroke-linecap="round" fill="currentColor"></g></svg>
-    </a>
-    <a class="yt" href="https://www.youtube.com/playlist?list=PLD1_sGFjZX0E" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg>
-      <span>ascoltalo su youtube</span><b aria-hidden="true">↗</b>
-    </a>
-  </div>
+  <div class="wrap head-cap"><div class="cap"><span>arte libera dalla strada per le strade</span><span class="cap-r">IN.DIPENDENZA <b>0.56</b></span></div></div>
 </header>
 
 <main>
@@ -629,6 +590,10 @@ header,main,footer{overflow-x:clip}
       <span class="cd-shadow" aria-hidden="true"></span>
       <span class="case-hint" id="caseHint">tocca</span>
     </div>
+    <div class="logo-zone" id="logoZone">
+      <h1 aria-label="056 – IN.DIPENDENZA"><span class="logo" id="logo" aria-hidden="true">056</span><span class="hand-t" aria-hidden="true">In.dipendenza</span></h1>
+      <svg class="wet" id="wet" aria-hidden="true"><g id="wetDrips" stroke="currentColor" stroke-linecap="round" fill="currentColor"></g></svg>
+    </div>
     </div>
     <div class="cd-txt">
       <h2 class="cd-name" style="--s:0"><span>custodia in cartoncino</span><span>cd autografato</span></h2>
@@ -640,8 +605,15 @@ header,main,footer{overflow-x:clip}
         <p class="cr-by"><i>tutto fatto da</i><span>0</span><span>5</span><span>6</span></p>
       </div>
       <div class="buy-row" style="--s:3">
-      <a class="cd-free dl-link" href="#"><span class="cf-main"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path class="cf-arr" d="M12 3v13M6 11l6 6 6-6"/><path d="M4 21h16"/></svg>free download</span><span class="cb-sub">17 tracce · mp3</span></a>
+      <a class="cd-free dl-link" href="#"><span class="cf-main"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path class="cf-arr" d="M12 3v13M6 11l6 6 6-6"/><path d="M4 21h16"/></svg>free download</span><span class="cb-sub" id="dlWord">17 tracce · mp3</span></a>
       <a class="cd-buy" href="https://ig.me/m/0.56.0.56" target="_blank" rel="noopener"><span class="cb-main">voglio la mia copia <b aria-hidden="true">→</b></span><span class="cb-sub">firmata · numerata · ordini in DM</span></a>
+      </div>
+      <div class="dl-extra" style="--s:4">
+        <span class="dl-count" id="dlCount" hidden><b id="dlNum">56</b> download</span>
+        <a class="yt" href="https://www.youtube.com/playlist?list=PLD1_sGFjZX0E" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg>
+          <span>ascoltalo su youtube</span><b aria-hidden="true">↗</b>
+        </a>
       </div>
     </div>
   </section>
@@ -754,7 +726,12 @@ const external = /^https?:\/\//.test(DOWNLOAD_URL);
 const ready = true;
 document.querySelectorAll('.dl-link').forEach(a => {
   if (external) a.href = DOWNLOAD_URL;
-  else { a.href = '#'; a.removeAttribute('target'); a.addEventListener('click', e => { e.preventDefault(); startDownload(); }); }
+  else { a.href = '#'; a.removeAttribute('target'); a.addEventListener('click', e => {
+    e.preventDefault(); burst(); wave(); startDownload();
+    // su telefono il 056 sta più in alto: lo porta in vista mentre cola
+    const r = zone.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > innerHeight) zone.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+  }); }
 });
 
 // Album: le tracce sono pubblicate con la pagina, lo ZIP si crea nel browser di chi scarica
@@ -814,7 +791,6 @@ function setDl(text, p) {
   const ring = document.getElementById('ctagRing');
   ring.style.strokeDashoffset = p == null ? 1 : 1 - p;
   document.getElementById('ctag').classList.toggle('busy', p != null && p < 1);
-  zone.querySelector('.dl-rule i').style.transform = p == null ? '' : `scaleX(${p})`;
 }
 async function startDownload() {
   if (!window.claude) {
@@ -823,11 +799,10 @@ async function startDownload() {
     if (dlTotal != null) setTotal(dlTotal + 1, true);
     setDl('download avviato', 1); toast('Download avviato');
     if (isIOS) { const g = document.getElementById('ios'); g.open = true; setTimeout(() => g.scrollIntoView({ behavior: 'smooth', block: 'center' }), 1400); }
-    setTimeout(() => setDl("scarica l'album", null), 2500);
+    setTimeout(() => setDl('17 tracce · mp3', null), 2500);
     return;
   }
   if (busy) return; busy = true;
-  window.scrollTo({ top: Math.max(0, zone.getBoundingClientRect().top + scrollY - 120), behavior: 'smooth' });
   try {
     const dl = await downloadsP;
     if (!dl) { showSingles(); return; }
@@ -845,7 +820,7 @@ async function startDownload() {
     else showSingles();
   } finally {
     busy = false;
-    setTimeout(() => setDl("scarica l'album", null), 1200);
+    setTimeout(() => setDl('17 tracce · mp3', null), 1200);
   }
 }
 function showSingles() {
@@ -916,9 +891,7 @@ function makeTilt(el, zone, { rx = 7, ry = 9, glare = null, persp = 0, base = ''
   return t;
 }
 
-const sleeve = document.getElementById('sleeve');
-if (!reduce) sleeve.addEventListener('animationend', () => { sleeve.style.animation = 'none'; }, { once: true });
-const coverTilt = makeTilt(sleeve, document.getElementById('stage'), { rx: 0, ry: 0, glare: document.getElementById('glare') });
+
 
 // Pannello download: stessa inclinazione, più leggera, con riflesso
 if (matchMedia('(hover: hover)').matches) document.querySelectorAll('.panel').forEach(panel => {
@@ -1005,7 +978,8 @@ function wetDrip(x, { len = 14 + Math.random() * 56, w = 0 } = {}) {
 }
 
 function burst() {
-  if (!wetReady || reduce) return;
+  if (reduce) return;
+  mapGlyphs();
   const w = floor.length;
   for (let k = 0; k < 9; k++) wetDrip(Math.random() * w, { w: k * .06, len: 30 + Math.random() * 60 });
 }
@@ -1040,24 +1014,10 @@ const tagLoop = () => {
   ctag.style.transform = `translate(${gx}px, ${gy}px)`;
   tagRaf = ctag.classList.contains('on') || Math.abs(mx - gx) > .5 ? requestAnimationFrame(tagLoop) : null;
 };
-zone.addEventListener('pointerenter', e => {
-  if (e.pointerType !== 'mouse') return;
-  mx = gx = e.clientX; my = gy = e.clientY;
-  ctag.classList.add('on'); if (!tagRaf) tagRaf = requestAnimationFrame(tagLoop);
-});
-zone.addEventListener('pointermove', e => { mx = e.clientX; my = e.clientY; });
-zone.addEventListener('pointerleave', () => ctag.classList.remove('on'));
-zone.addEventListener('pointerdown', () => ctag.classList.add('press'));
-addEventListener('pointerup', () => ctag.classList.remove('press'));
-zone.style.cursor = matchMedia('(hover: hover)').matches ? 'none' : '';
 
-zone.addEventListener('click', e => {
-  burst(); wave();
-  if (!external) { e.preventDefault(); startDownload(); return; }
-  zone.classList.add('go');
-  dlWord.textContent = 'si apre il download…';
-  setTimeout(() => { zone.classList.remove('go'); dlWord.textContent = "scarica l'album"; }, 3500);
-});
+
+// toccare il 056 lo fa colare (il download parte dal pulsante free download)
+zone.addEventListener('click', () => { burst(); wave(); });
 
 // Tracklist: 9 secondi di ascolto al tocco, dal cuore della traccia
 const SNIP = 9;
@@ -1249,10 +1209,9 @@ let ticking = false;
 addEventListener('scroll', () => {
   if (ticking) return; ticking = true;
   requestAnimationFrame(() => {
-    if (!reduce && scrollY < innerHeight * 1.2) { coverTilt.sy = scrollY * .12; coverTilt.kick(); }
     // la barra si toglie di mezzo quando c'è il pulsante del CD sullo schermo
     const br = buyBtn.getBoundingClientRect();
-    sticky.classList.toggle('on', ready && zone.getBoundingClientRect().bottom < 0 && !(br.top < innerHeight && br.bottom > 0));
+    sticky.classList.toggle('on', ready && scrollY > innerHeight * .6 && !(br.top < innerHeight && br.bottom > 0));
     ticking = false;
   });
 }, { passive: true });
