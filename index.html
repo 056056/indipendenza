@@ -270,7 +270,19 @@ h1{display:grid;justify-items:start;font-weight:400}
 .cd-col .case-hint{display:block;margin-top:-4px}
 .dl-extra{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
 .dl-extra .yt{margin-top:0}
-.yt-logo{justify-self:center;margin-top:-6px}
+.yt-logo{justify-self:center;margin-top:-6px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;width:100%;max-width:360px;min-height:64px;padding:10px 18px 10px 10px;border-radius:999px;
+  border:1px solid rgba(236,235,231,.18);background:linear-gradient(180deg,rgba(28,28,30,.85),rgba(12,12,13,.85));-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 16px 32px -16px rgba(0,0,0,.9)}
+.yl-ic{position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#ff0033;color:#fff;box-shadow:0 6px 16px -4px rgba(255,0,51,.6)}
+.yt .yl-ic svg{width:18px;height:18px;margin-left:2px;color:#fff}
+.yl-ic::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(255,0,51,.5);animation:ylPulse 2.4s ease-out infinite}
+@keyframes ylPulse{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+.yl-tx{display:grid;gap:3px;text-align:left;min-width:0}
+.yl-tx b{font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.yl-tx small{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.yl-go{font-size:18px;color:var(--dim);transition:transform .4s var(--ease),color .3s}
+.yt-logo:active{transform:scale(.97)}
+@media (hover:hover){.yt-logo:hover{border-color:rgba(255,0,51,.6);background:linear-gradient(180deg,rgba(40,14,16,.9),rgba(14,10,10,.9))}.yt-logo:hover .yl-go{color:var(--ink);transform:translate(3px,-3px)}}
 .buy-row{display:grid;grid-template-columns:1fr;gap:12px;width:100%;max-width:380px}
 .buy-row .cb-main,.buy-row .cf-main{font-size:clamp(16px,4.4vw,19px);letter-spacing:.12em}
 .buy-row .cb-sub{font-size:11px;letter-spacing:.14em}
@@ -640,10 +652,7 @@ header,main,footer{overflow-x:clip}
       <p class="thanks" id="thanks" aria-live="polite">grazie del supporto</p>
       <svg class="wet" id="wet" aria-hidden="true"><g id="wetDrips" stroke="currentColor" stroke-linecap="round" fill="currentColor"></g></svg>
     </div>
-    <a class="yt yt-logo" href="https://www.youtube.com/playlist?list=PLD1_sGFjZX0E" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg>
-          <span>ascoltalo su youtube</span><b aria-hidden="true">↗</b>
-        </a>
+    <a class="yt yt-logo" href="https://www.youtube.com/playlist?list=PLD1_sGFjZX0E" target="_blank" rel="noopener"><span class="yl-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span><span class="yl-tx"><b>ascoltalo su youtube</b><small>playlist completa · 17 tracce</small></span><span class="yl-go" aria-hidden="true">↗</span></a>
     </div>
     <div class="cd-txt">
       <h2 class="cd-name" style="--s:0"><span>custodia in cartoncino</span><span>cd autografato</span></h2>
