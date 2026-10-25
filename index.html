@@ -68,7 +68,10 @@ img{display:block;max-width:100%}
 
 /* HERO */
 header{position:relative;isolation:isolate}
-.stage{perspective:1400px;padding-block:clamp(28px,6vw,64px) 0;max-width:1400px}
+header{--hh:min(66.67vw,88vh)}
+.stage{position:absolute;inset:0 0 auto 0;height:var(--hh);z-index:0;padding:0;max-width:none;perspective:none}
+.stage .sleeve,.stage .sleeve-in{height:100%}
+.stage .sleeve img{height:100%;aspect-ratio:auto;object-position:50% 40%}
 .stage .cap{max-width:1040px;margin-inline:auto}
 .sleeve{position:relative;transform-style:preserve-3d;will-change:transform;
   animation:rise 1.6s var(--ease) both}
@@ -80,9 +83,8 @@ header{position:relative;isolation:isolate}
 @keyframes spin{to{transform:rotate(360deg)}}
 .stage:hover .vinyl,.vinyl.out{transform:translateZ(-24px) translateY(-24%)}
 .stage:hover .disc,.vinyl.out .disc{animation-play-state:running}
-.sleeve-in::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,transparent 45%,rgba(10,10,11,.55) 75%,rgba(10,10,11,.9))}
-.sleeve-in{position:relative;border-radius:0;overflow:hidden;background:transparent;
-  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 13%,#000 87%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 9%,#000 78%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(to right,transparent 0,#000 13%,#000 87%,transparent 100%),linear-gradient(to bottom,transparent 0,#000 9%,#000 78%,transparent 100%);mask-composite:intersect;
+.sleeve-in::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(10,10,11,.35) 0,transparent 18%,transparent 40%,rgba(10,10,11,.6) 70%,rgba(10,10,11,.92))}
+.sleeve-in{position:relative;border-radius:0;overflow:hidden;background:transparent;-webkit-mask-image:linear-gradient(to bottom,#000 0,#000 55%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0,#000 55%,transparent 100%);
   box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 40px 80px -20px rgba(0,0,0,.85),0 18px 30px -18px rgba(0,0,0,.9)}
 .sleeve img{width:100%;aspect-ratio:3/2;object-fit:cover;filter:contrast(1.05)}
 .glare{position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;
@@ -96,10 +98,12 @@ header{position:relative;isolation:isolate}
 .crop.tl{top:-10px;left:-10px;border-width:1px 0 0 1px}.crop.tr{top:-10px;right:-10px;border-width:1px 1px 0 0}
 .crop.bl{bottom:-10px;left:-10px;border-width:0 0 1px 1px}.crop.br{bottom:-10px;right:-10px;border-width:0 1px 1px 0}
 .cap-r b{color:var(--red);font-weight:600}
+.titling .cap{width:100%;text-shadow:0 2px 12px rgba(0,0,0,.8)}
 .cap{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap;margin-bottom:20px;font-size:clamp(13px,1.6vw,17px);font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--ink)}
 
 /* titolo */
-.titling{position:relative;z-index:3;padding-block:0;margin-top:calc(-1 * clamp(24px,6.5vw,75px))}
+.titling{position:relative;z-index:3;padding-block:calc(var(--hh) - clamp(150px,22vw,300px)) clamp(24px,4vw,40px);margin-top:0}
+.top{position:relative;z-index:3}
 .titling{display:grid;justify-items:start}
 h1{display:grid;justify-items:start;font-weight:400}
 .logo{display:inline-flex;font-family:var(--tag);font-size:clamp(150px,44vw,400px);line-height:.78;letter-spacing:.01em;overflow:hidden;padding:.06em .06em .07em 0;text-shadow:1px 1px 0 #c4c1ba,2px 2px 0 #aeaba4,3px 3px 0 #97948e,4px 4px 0 #807e78,5px 5px 0 #6a6863,6px 6px 0 #53524e,7px 7px 0 #3d3c39,0 22px 40px rgba(0,0,0,.7)}
@@ -170,7 +174,7 @@ h1{display:grid;justify-items:start;font-weight:400}
 .panel:hover .glare{opacity:.5}
 
 /* copia fisica: il CD con la copertina stampata */
-.cdx{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:clamp(28px,6vw,72px);padding-block:clamp(56px,10vw,100px) 0}
+.cdx{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:clamp(24px,5vw,60px);padding-block:clamp(36px,7vw,72px) 0}
 .cd-stage{position:relative;perspective:1300px;display:grid;justify-items:center;gap:18px;padding-block:20px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;outline-offset:8px}
 /* custodia jewel case in 3D: vassoio con il CD, bordi in plastica, coperchio con la copertina che si apre sulla cerniera */
 .cd-stage{--w:min(58vw,320px)}
@@ -243,6 +247,17 @@ h1{display:grid;justify-items:start;font-weight:400}
 .cr-sum span+span::before{content:"· ";color:var(--red)}
 .cr-by{display:flex;align-items:baseline;gap:.7em;font-family:var(--tag);font-size:clamp(28px,4.4vw,36px);line-height:1;color:var(--ink)}
 .cr-by i{font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);margin-right:.4em}
+.buy-row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:stretch;width:100%;max-width:520px}
+.buy-row .cb-main,.buy-row .cf-main{font-size:13px;letter-spacing:.12em}
+.buy-row .cb-sub{font-size:9px;letter-spacing:.12em}
+.buy-row>a{padding:16px 18px 14px;align-content:center}
+.buy-row .cd-buy{margin-top:0}
+.cd-free{position:relative;display:grid;gap:4px;justify-items:start;padding:18px 22px 16px;border-radius:5px;border:1px solid rgba(236,235,231,.35);color:var(--ink);background:rgba(10,10,11,.5);transition:border-color .3s,background .3s,transform .45s var(--ease)}
+.cf-main{display:flex;align-items:center;gap:10px;font-size:clamp(14px,2vw,16px);font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+.cf-main svg{width:18px;height:18px;color:var(--red)}
+.cf-arr{animation:nudge 1.6s var(--ease) infinite}
+.cd-free:active{transform:scale(.97)}
+@media (hover:hover){.cd-free:hover{border-color:var(--ink);background:rgba(236,235,231,.06)}}
 /* bottone acquisto: pieno, rosso, con riflesso che passa e conferma tattile */
 .cd-buy{position:relative;overflow:hidden;display:grid;gap:4px;justify-items:start;margin-top:10px;padding:18px 26px 16px;border-radius:5px;background:var(--red);color:var(--ink);
   box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 -3px 0 rgba(0,0,0,.25) inset,0 18px 36px -14px rgba(179,36,28,.85);transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
@@ -270,7 +285,7 @@ h1{display:grid;justify-items:start;font-weight:400}
 .cd-cta:active{transform:scale(.97)}
 @media (hover:hover){.cd-cta:hover{background:var(--red);border-color:var(--red);box-shadow:0 14px 30px -12px rgba(179,36,28,.8)}.cd-cta:hover b{color:var(--ink);transform:translateX(4px)}}
 .cd-handle{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
-@media(max-width:760px){.cd-stage{--w:min(45vw,300px)}.cd-stage.is-open .case-pos{translate:calc(var(--w) * -.5) 0}.case.open.pack .cd{transform:translateX(102%)}.cd-irid{opacity:.25}.cd-bonus{justify-content:center}.cr-sum{justify-content:center}.cdx{grid-template-columns:1fr;justify-items:center;text-align:center}.cd-txt{justify-items:center}.cd-spec{margin-inline:auto}.cd-buy{justify-items:center}.cr{justify-items:center}.cr-roles{text-align:center}}
+@media(max-width:760px){.buy-row{justify-content:center}.cd-stage{--w:min(45vw,300px)}.cd-stage.is-open .case-pos{translate:calc(var(--w) * -.5) 0}.case.open.pack .cd{transform:translateX(102%)}.cd-irid{opacity:.25}.cd-bonus{justify-content:center}.cr-sum{justify-content:center}.cdx{grid-template-columns:1fr;justify-items:center;text-align:center}.cd-txt{justify-items:center}.cd-spec{margin-inline:auto}.cd-buy{justify-items:center}.cr{justify-items:center}.cr-roles{text-align:center}}
 
 /* canale Telegram */
 .tg{padding-block:22px 0}
@@ -382,7 +397,7 @@ h1{display:grid;justify-items:start;font-weight:400}
 .note{position:absolute;right:clamp(10px,4vw,34px);top:-26px;font-family:var(--hand);font-size:32px;line-height:1;color:var(--red);transform:rotate(-4deg);pointer-events:none}
 
 /* nastro */
-.tape{margin-block:clamp(48px,8vw,80px);border-block:1px solid var(--line);padding-block:14px;overflow:hidden;white-space:nowrap}
+.tape{margin-block:clamp(32px,6vw,56px);border-block:1px solid var(--line);padding-block:14px;overflow:hidden;white-space:nowrap}
 .tape-in{display:inline-flex;animation:marq 34s linear infinite}
 .tape:hover .tape-in{animation-play-state:paused}
 .tape span{font-family:var(--hand);font-size:28px;letter-spacing:.03em;color:var(--dim);padding-right:40px}
@@ -395,7 +410,7 @@ h2{font-family:var(--hand);font-weight:400;font-size:clamp(46px,10vw,76px);line-
 
 /* tracklist */
 .tl ol{list-style:none;border-top:1px solid var(--line)}
-.tl li{position:relative;display:grid;grid-template-columns:44px 1fr auto;align-items:baseline;gap:12px;padding:16px 4px;border-bottom:1px solid var(--line);transition:padding .45s var(--ease),background .45s}
+.tl li{position:relative;display:grid;grid-template-columns:30px 20px 1fr auto;align-items:center;gap:12px;padding:16px 4px;border-bottom:1px solid var(--line);transition:padding .45s var(--ease),background .45s}
 .tl li::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--red);transform:scaleY(0);transition:transform .45s var(--ease)}
 .tl li:hover{padding-left:18px;background:linear-gradient(90deg,var(--red-soft),transparent 60%)}
 .tl li:hover::before{transform:none}
@@ -405,12 +420,17 @@ h2{font-family:var(--hand);font-weight:400;font-size:clamp(46px,10vw,76px);line-
 .tl li.playing .tp{opacity:1}
 .tl li.playing{background:linear-gradient(90deg,var(--red-soft),transparent 70%)}
 .tl li.playing .t{color:var(--red)}
-.eq{position:absolute;left:-2px;top:50%;translate:0 -50%;display:none;gap:2px;align-items:flex-end;height:12px}
+.pl{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1px solid rgba(236,235,231,.3);color:var(--ink);transition:border-color .3s,background .3s,color .3s}
+.pl svg{width:8px;height:8px;margin-left:1px}
+.tl li:hover .pl{border-color:var(--red);color:var(--red)}
+.tl li.playing .pl{border-color:var(--red);background:var(--red)}
+.tl li.playing .pl svg{display:none}
+.eq{display:none;gap:2px;align-items:flex-end;height:12px}
 .eq i{width:2px;height:100%;background:var(--red);animation:eq .8s ease-in-out infinite;transform-origin:bottom}
 .eq i:nth-child(2){animation-delay:-.3s}.eq i:nth-child(3){animation-delay:-.55s}
 @keyframes eq{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
 .tl li.playing .eq{display:flex}
-.tl li.playing .n{opacity:0}
+.tl .eq i{background:var(--ink)}
 .n{font-size:11.5px;color:var(--dim);font-variant-numeric:tabular-nums}
 .t{font-family:var(--hand);font-size:26px;line-height:1.05;letter-spacing:.01em;min-width:0;overflow-wrap:anywhere}
 .k{font-family:var(--hand);font-size:24px;line-height:1;color:var(--red)}
@@ -485,7 +505,7 @@ header,main,footer{overflow-x:clip}
   .cap{margin-bottom:14px;font-size:13px;letter-spacing:.12em;line-height:1.5}
   .stage{padding-block:30px 0;padding-left:0;padding-right:0}
   .stage .cap{padding-left:var(--gl);padding-right:var(--gr)}
-  .titling{padding-block:18px 0}
+  .titling{padding-block:calc(var(--hh) - 40px) 20px}
   .tg{padding-block:clamp(40px,10vw,60px) 0}
   .backdrop img{filter:grayscale(1) contrast(1.2) brightness(.7)}
   .grain{animation:none}
@@ -517,12 +537,11 @@ header,main,footer{overflow-x:clip}
     <div class="wrap top"><b>056</b><span class="live"><i></i>Free download</span></div>
 
   <div class="wrap stage" id="stage">
-    <div class="cap"><span>arte libera dalla strada per le strade</span><span class="cap-r">IN.DIPENDENZA <b>0.56</b></span></div>
     <div class="sleeve" id="sleeve">
       <span class="crop tl"></span><span class="crop tr"></span><span class="crop bl"></span><span class="crop br"></span>
       <div class="sleeve-in">
         <img src="cover.jpg" alt="Copertina di IN.DIPENDENZA: cartellone abbandonato con la scritta 056 dipinta a mano, una palma e capannoni sullo sfondo">
-        <svg class="paintover" viewBox="0 0 1000 667" role="img" aria-label="Free download">
+        <svg class="paintover" viewBox="0 0 1000 667" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Free download">
           <defs>
             <filter id="worn" x="-4%" y="-10%" width="108%" height="120%">
               <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="7" result="warp"/>
@@ -543,6 +562,7 @@ header,main,footer{overflow-x:clip}
   </div>
 
   <div class="wrap titling">
+    <div class="cap"><span>arte libera dalla strada per le strade</span><span class="cap-r">IN.DIPENDENZA <b>0.56</b></span></div>
     <a class="take" id="logoZone" href="#" target="_blank" rel="noopener" aria-label="Scarica gratis l'album IN.DIPENDENZA di 056">
       <h1 aria-label="056 – IN.DIPENDENZA">
         <span class="logo" id="logo" aria-hidden="true">056</span>
@@ -619,7 +639,10 @@ header,main,footer{overflow-x:clip}
         <p class="cr-sum"><span>9 ruoli</span><span>1 artista</span><span>ogni copia unica</span></p>
         <p class="cr-by"><i>tutto fatto da</i><span>0</span><span>5</span><span>6</span></p>
       </div>
-      <a class="cd-buy" style="--s:3" href="https://ig.me/m/0.56.0.56" target="_blank" rel="noopener"><span class="cb-main">voglio la mia copia <b aria-hidden="true">→</b></span><span class="cb-sub">firmata · numerata · ordini in DM</span></a>
+      <div class="buy-row" style="--s:3">
+      <a class="cd-free dl-link" href="#"><span class="cf-main"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path class="cf-arr" d="M12 3v13M6 11l6 6 6-6"/><path d="M4 21h16"/></svg>free download</span><span class="cb-sub">17 tracce · mp3</span></a>
+      <a class="cd-buy" href="https://ig.me/m/0.56.0.56" target="_blank" rel="noopener"><span class="cb-main">voglio la mia copia <b aria-hidden="true">→</b></span><span class="cb-sub">firmata · numerata · ordini in DM</span></a>
+      </div>
     </div>
   </section>
 
@@ -631,23 +654,23 @@ header,main,footer{overflow-x:clip}
   <section class="wrap tl" id="tracklist">
     <div class="sec-h rv"><h2>Tracklist</h2><span class="lbl">tocca · 9s di ascolto</span></div>
     <ol>
-      <li class="rv" role="button" tabindex="0" data-n="01"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">01</span><span class="t">.56</span><span class="k">skit Inoki</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="02"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">02</span><span class="t">Intro</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="03"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">03</span><span class="t">0</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="04"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">04</span><span class="t">5</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="05"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">05</span><span class="t">6</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="06"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">06</span><span class="t">Riflessioni</span><span class="k">skit Popi</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="07"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">07</span><span class="t">€UR0INA</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="08"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">08</span><span class="t">Spot</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="09"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">09</span><span class="t">Il nome</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="10"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">10</span><span class="t">U</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="11"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">11</span><span class="t">Affogo in te</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="12"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">12</span><span class="t">Affogo in te</span><span class="k">rework</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="13"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">13</span><span class="t">Don't walk away</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="14"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">14</span><span class="t">In to the water</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="15"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">15</span><span class="t">Next gen</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="16"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">16</span><span class="t">Feeling like this</span><span class="tp" aria-hidden="true"></span></li>
-      <li class="rv" role="button" tabindex="0" data-n="17"><span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="n">17</span><span class="t">Sun is down</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="01"><span class="n">01</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">.56</span><span class="k">skit Inoki</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="02"><span class="n">02</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Intro</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="03"><span class="n">03</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">0</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="04"><span class="n">04</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">5</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="05"><span class="n">05</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">6</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="06"><span class="n">06</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Riflessioni</span><span class="k">skit Popi</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="07"><span class="n">07</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">€UR0INA</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="08"><span class="n">08</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Spot</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="09"><span class="n">09</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Il nome</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="10"><span class="n">10</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">U</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="11"><span class="n">11</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Affogo in te</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="12"><span class="n">12</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Affogo in te</span><span class="k">rework</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="13"><span class="n">13</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Don't walk away</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="14"><span class="n">14</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">In to the water</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="15"><span class="n">15</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Next gen</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="16"><span class="n">16</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Feeling like this</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv" role="button" tabindex="0" data-n="17"><span class="n">17</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Sun is down</span><span class="tp" aria-hidden="true"></span></li>
     </ol>
   </section>
 
@@ -797,7 +820,7 @@ async function startDownload() {
   if (!window.claude) {
     const a = document.createElement('a'); a.href = relZip || ZIP_NAME; a.download = ZIP_NAME;
     document.body.appendChild(a); a.click(); a.remove();
-    if (dlTotal != null) { dlTotal++; showCount(dlTotal, true); }
+    if (dlTotal != null) setTotal(dlTotal + 1, true);
     setDl('download avviato', 1); toast('Download avviato');
     if (isIOS) { const g = document.getElementById('ios'); g.open = true; setTimeout(() => g.scrollIntoView({ behavior: 'smooth', block: 'center' }), 1400); }
     setTimeout(() => setDl("scarica l'album", null), 2500);
@@ -895,7 +918,7 @@ function makeTilt(el, zone, { rx = 7, ry = 9, glare = null, persp = 0, base = ''
 
 const sleeve = document.getElementById('sleeve');
 if (!reduce) sleeve.addEventListener('animationend', () => { sleeve.style.animation = 'none'; }, { once: true });
-const coverTilt = makeTilt(sleeve, document.getElementById('stage'), { glare: document.getElementById('glare') });
+const coverTilt = makeTilt(sleeve, document.getElementById('stage'), { rx: 0, ry: 0, glare: document.getElementById('glare') });
 
 // Pannello download: stessa inclinazione, più leggera, con riflesso
 if (matchMedia('(hover: hover)').matches) document.querySelectorAll('.panel').forEach(panel => {
@@ -1104,18 +1127,27 @@ function showCount(n, animate) {
   const step = now => { const p = Math.min(1, (now - t0) / 1200); el.textContent = Math.round(from + (n - from) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
   requestAnimationFrame(step);
 }
-if (!window.claude) {
-  fetch(REL_API, { headers: { Accept: 'application/vnd.github+json' } })
+// Il numero non scende mai: GitHub aggiorna i conteggi con qualche minuto di ritardo,
+// quindi si mostra il più alto tra il dato di GitHub e l'ultimo visto su questo telefono
+const DL_KEY = 'dl056';
+const seen = () => { try { return +localStorage.getItem(DL_KEY) || 0; } catch (e) { return 0; } };
+const remember = n => { try { localStorage.setItem(DL_KEY, String(n)); } catch (e) {} };
+function setTotal(n, animate) { dlTotal = Math.max(n, seen(), DL_BASE); remember(dlTotal); showCount(dlTotal, animate); }
+function loadCount(retry) {
+  fetch(REL_API, { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' })
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(rel => {
       const a = (rel.assets || []).find(x => /\.zip$/i.test(x.name));
       if (!a) return;
       relZip = REL_ZIP;
-      dlTotal = DL_BASE + a.download_count;
-      showCount(dlTotal, true);
+      setTotal(DL_BASE + a.download_count, true);
     })
-    .catch(() => {});
+    .catch(() => {
+      if (retry) setTimeout(() => loadCount(false), 4000);
+      else if (seen()) { relZip = REL_ZIP; setTotal(seen(), false); }
+    });
 }
+if (!window.claude) loadCount(true);
 
 // Ruoli: si accendono uno dopo l'altro quando arrivi alla sezione
 const crGrid = document.getElementById('crGrid');
