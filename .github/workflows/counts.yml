@@ -19,7 +19,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           n=$(gh api repos/${{ github.repository }}/releases/tags/v1.0 --jq '[.assets[] | select(.name|endswith(".zip")) | .download_count] | add // 0')
-          echo "{\"downloads\":$n}" > counts.json
+          a=$(curl -s -m 20 https://abacus.jasoncameron.dev/get/056-indipendenza/download | grep -o '[0-9]\+' | head -1); a=${a:-0}
+          echo "{\"downloads\":$n,\"abacus\":$a}" > counts.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add counts.json

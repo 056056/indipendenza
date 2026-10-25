@@ -1216,7 +1216,7 @@ function loadCount() {
     fetch(`${CNT}/get/${CNT_KEY}?t=${Date.now()}`, { cache: 'no-store' })
       .then(r => r.ok ? r.json() : Promise.reject()).then(j => { abN = Math.max(abN, num(j.value)); }).catch(() => {}),
     fetch('counts.json?t=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject())
-      .then(j => { ghN = Math.max(ghN, num(j.downloads)); }).catch(() => {}),
+      .then(j => { ghN = Math.max(ghN, num(j.downloads)); abN = Math.max(abN, num(j.abacus)); }).catch(() => {}),
     fetch(REL_API, { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject())
       .then(rel => { ghN = Math.max(ghN, num(relCount(rel))); }).catch(() => {})
   ];
