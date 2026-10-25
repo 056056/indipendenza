@@ -626,7 +626,7 @@ header,main,footer{overflow-x:clip}
         <p class="cr-by"><i>tutto fatto da</i><span>0</span><span>5</span><span>6</span></p>
       </div>
       <div class="buy-row" style="--s:3">
-      <span class="dl-count" id="dlCount" hidden><b id="dlNum" class="odo" aria-label="56"></b><span class="dl-of">download<br>/ 1000 copie</span><span class="dl-bar"><i id="dlBar"></i></span></span>
+      <span class="dl-count" id="dlCount" hidden><b id="dlNum" class="odo" aria-label="56"></b><span class="dl-of">download</span></span>
       <a class="cd-free dl-link" href="#"><span class="cf-main">free download <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path class="cf-arr" d="M12 3v13M6 11l6 6 6-6"/><path d="M4 21h16"/></svg></span><span class="cb-sub" id="dlWord">17 tracce · mp3</span></a>
       <a class="cd-buy" href="https://ig.me/m/0.56.0.56" target="_blank" rel="noopener"><span class="cb-main">voglio la mia copia <b aria-hidden="true">→</b></span><span class="cb-sub">firmata · numerata · ordini in DM</span></a>
       </div>
@@ -1128,7 +1128,6 @@ let dlTotal = null, relZip = null;
 function showCount(n, animate) {
   const el = document.getElementById('dlNum'), box = document.getElementById('dlCount');
   box.hidden = false;
-  document.getElementById('dlBar').style.setProperty('--f', Math.min(1, n / 1000));
   const txt = String(n).padStart(4, '0');
   el.setAttribute('aria-label', n + ' download');
   while (el.children.length < txt.length) {
