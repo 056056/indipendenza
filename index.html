@@ -1148,20 +1148,25 @@ const DL_KEY = 'dl056-v2';
 const seen = () => { try { return +localStorage.getItem(DL_KEY) || 0; } catch (e) { return 0; } };
 const remember = n => { try { localStorage.setItem(DL_KEY, String(n)); } catch (e) {} };
 function setTotal(n, animate, confirmed = true) { dlTotal = Math.max(n, seen(), DL_BASE); if (confirmed) remember(dlTotal); showCount(dlTotal, animate); }
-// prima il file dello stesso sito (non lo blocca nessun browser), poi GitHub, altrimenti l'ultimo numero visto o 56
+// Conteggio vero: ogni tocco su FREE DOWNLOAD viene registrato su GoatCounter (evento "download") in pochi secondi.
+// GitHub conta i download dello ZIP ma aggiorna il numero con ore di ritardo: serve solo da riserva.
 const relCount = rel => { const a = (rel.assets || []).find(x => /\.zip$/i.test(x.name)); return a ? a.download_count : null; };
+const num = v => +String(v ?? '').replace(/\D/g, '') || 0;
+let gcN = 0, ghN = 0;
+function applyCount(animate) { setTotal(DL_BASE + Math.max(gcN, ghN), animate); }
 function loadCount() {
   relZip = REL_ZIP;
-  fetch('counts.json?t=' + Date.now(), { cache: 'no-store' })
-    .then(r => r.ok ? r.json() : Promise.reject())
-    .then(j => { if (typeof j.downloads !== 'number') throw 0; setTotal(DL_BASE + j.downloads, true); })
-    .catch(() => {})
-    .finally(() => {
-      fetch(REL_API, { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' })
-        .then(r => r.ok ? r.json() : Promise.reject())
-        .then(rel => { const n = relCount(rel); if (n != null) setTotal(DL_BASE + n, true); })
-        .catch(() => { if (dlTotal == null) setTotal(DL_BASE, false); });
-    });
+  const jobs = [];
+  if (GC_CODE) jobs.push(
+    fetch(`https://${GC_CODE}.goatcounter.com/counter/${encodeURIComponent('evento/download')}.json?t=${Date.now()}`, { cache: 'no-store' })
+      .then(r => r.ok ? r.json() : r.status === 404 ? { count: 0 } : Promise.reject())
+      .then(j => { gcN = Math.max(gcN, num(j.count)); }).catch(() => {}));
+  jobs.push(
+    fetch('counts.json?t=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject())
+      .then(j => { ghN = Math.max(ghN, num(j.downloads)); }).catch(() => {}),
+    fetch(REL_API, { headers: { Accept: 'application/vnd.github+json' }, cache: 'no-store' }).then(r => r.ok ? r.json() : Promise.reject())
+      .then(rel => { ghN = Math.max(ghN, num(relCount(rel))); }).catch(() => {}));
+  Promise.allSettled(jobs).then(() => applyCount(true));
 }
 if (!window.claude) {
   loadCount();
