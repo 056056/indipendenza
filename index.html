@@ -312,6 +312,15 @@ h1{display:grid;justify-items:start;font-weight:400}
 .cd-cta:active{transform:scale(.97)}
 @media (hover:hover){.cd-cta:hover{background:var(--red);border-color:var(--red);box-shadow:0 14px 30px -12px rgba(179,36,28,.8)}.cd-cta:hover b{color:var(--ink);transform:translateX(4px)}}
 .cd-handle{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+@media(max-width:760px){
+  /* telefono: CD, poi subito i pulsanti, poi il 056 animato, poi la scheda */
+  .cdx{display:flex;flex-direction:column;align-items:center;gap:22px}
+  .cd-col,.cd-txt{display:contents}
+  .cd-stage{order:1}
+  .buy-row{order:2}
+  .logo-zone{order:3}
+  .cd-name{order:4}.cd-bonus{order:5}.cr{order:6}.dl-extra{order:7}
+}
 @media(max-width:760px){.logo-zone .logo{font-size:34vw}.dl-extra{justify-content:center}.buy-row{margin-inline:auto}.buy-row>a{justify-items:center;text-align:center}.cd-stage{--w:min(45vw,300px)}.cd-stage.is-open .case-pos{translate:calc(var(--w) * -.5) 0}.case.open.pack .cd{transform:translateX(102%)}.cd-irid{opacity:.25}.cd-bonus{justify-content:center}.cr-sum{justify-content:center}.cdx{grid-template-columns:1fr;justify-items:center;text-align:center}.cd-txt{justify-items:center}.cd-spec{margin-inline:auto}.cd-buy{justify-items:center}.cr{justify-items:center}.cr-roles{text-align:center}}
 
 /* canale Telegram */
