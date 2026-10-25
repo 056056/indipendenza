@@ -270,6 +270,7 @@ h1{display:grid;justify-items:start;font-weight:400}
 .cd-col .case-hint{display:none}
 .dl-extra{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
 .dl-extra .yt{margin-top:0}
+.yt-logo{justify-self:center;margin-top:-6px}
 .buy-row{display:grid;grid-template-columns:1fr;gap:12px;width:100%;max-width:380px}
 .buy-row .cb-main,.buy-row .cf-main{font-size:13px;letter-spacing:.12em}
 .buy-row .cb-sub{font-size:9px;letter-spacing:.12em}
@@ -319,7 +320,8 @@ h1{display:grid;justify-items:start;font-weight:400}
   .cd-stage{order:1}
   .buy-row{order:2}
   .logo-zone{order:3}
-  .cd-name{order:4}.cd-bonus{order:5}.cr{order:6}.dl-extra{order:7}
+  .yt-logo{order:4}
+  .cd-name{order:5}.cd-bonus{order:6}.cr{order:7}
 }
 @media(max-width:760px){.logo-zone .logo{font-size:34vw}.dl-extra{justify-content:center}.buy-row{margin-inline:auto}.buy-row>a{justify-items:center;text-align:center}.cd-stage{--w:min(45vw,300px)}.cd-stage.is-open .case-pos{translate:calc(var(--w) * -.5) 0}.case.open.pack .cd{transform:translateX(102%)}.cd-irid{opacity:.25}.cd-bonus{justify-content:center}.cr-sum{justify-content:center}.cdx{grid-template-columns:1fr;justify-items:center;text-align:center}.cd-txt{justify-items:center}.cd-spec{margin-inline:auto}.cd-buy{justify-items:center}.cr{justify-items:center}.cr-roles{text-align:center}}
 
@@ -638,6 +640,10 @@ header,main,footer{overflow-x:clip}
       <p class="thanks" id="thanks" aria-live="polite">grazie del supporto</p>
       <svg class="wet" id="wet" aria-hidden="true"><g id="wetDrips" stroke="currentColor" stroke-linecap="round" fill="currentColor"></g></svg>
     </div>
+    <a class="yt yt-logo" href="https://www.youtube.com/playlist?list=PLD1_sGFjZX0E" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg>
+          <span>ascoltalo su youtube</span><b aria-hidden="true">↗</b>
+        </a>
     </div>
     <div class="cd-txt">
       <h2 class="cd-name" style="--s:0"><span>custodia in cartoncino</span><span>cd autografato</span></h2>
@@ -652,12 +658,6 @@ header,main,footer{overflow-x:clip}
       <span class="dl-count" id="dlCount" hidden><b id="dlNum" class="odo" aria-label="56"></b><span class="dl-of">download</span></span>
       <a class="cd-free dl-link" href="#"><span class="cf-main">free download <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path class="cf-arr" d="M12 3v13M6 11l6 6 6-6"/><path d="M4 21h16"/></svg></span><span class="cb-sub" id="dlWord">17 tracce · mp3</span></a>
       <a class="cd-buy" href="https://ig.me/m/0.56.0.56" target="_blank" rel="noopener"><span class="cb-main">voglio la mia copia <b aria-hidden="true">→</b></span><span class="cb-sub">firmata · numerata · ordini in DM</span></a>
-      </div>
-      <div class="dl-extra" style="--s:4">
-        <a class="yt" href="https://www.youtube.com/playlist?list=PLD1_sGFjZX0E" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg>
-          <span>ascoltalo su youtube</span><b aria-hidden="true">↗</b>
-        </a>
       </div>
     </div>
   </section>
