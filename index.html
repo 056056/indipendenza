@@ -230,14 +230,14 @@ h1{display:grid;justify-items:start;font-weight:400}
 .cd-spec li{padding:11px 0;border-bottom:1px solid var(--line);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
 .cd-spec li::before{content:"— ";color:var(--red)}
 .cd-bonus{position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;width:100%;max-width:340px;padding:8px 0;border-radius:0;background:none;border:0}
-.bn-big{font-family:var(--tag);font-weight:400;font-size:clamp(34px,5vw,42px);line-height:.8;color:var(--red);transform:rotate(-4deg);
-  text-shadow:1px 1px 0 #7a1812,2px 2px 0 #52100d}
+.bn-big{font-family:var(--tag);font-weight:400;font-size:clamp(30px,4.4vw,36px);line-height:.8;color:var(--ink);opacity:.9;transform:rotate(-4deg);
+  text-shadow:1px 1px 0 #8a8780,2px 2px 0 #55534f}
 .bn-tx{display:grid;gap:8px;min-width:0;text-align:left}
-.bn-t{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.bn-t{font-size:11px;color:var(--dim)!important;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
 .bn-locks{display:flex;gap:6px}
 .bn-locks i{display:grid;place-items:center;width:16px;height:16px;color:var(--dim);animation:lockOn 6s ease-in-out infinite;animation-delay:calc(var(--k) * 250ms)}
 .bn-locks svg{width:9px;height:9px}
-@keyframes lockOn{0%,60%,100%{color:var(--dim)}25%,40%{color:var(--red)}}
+@keyframes lockOn{0%,60%,100%{color:rgba(236,235,231,.3)}25%,40%{color:var(--ink)}}
 .bn-stamp{font-size:9px;font-weight:600;line-height:1.3;letter-spacing:.16em;text-transform:uppercase;text-align:center;color:var(--dim);padding:4px 6px;border:1px solid rgba(236,235,231,.22);border-radius:3px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 /* scheda prodotto: entra in sequenza quando arrivi */
@@ -249,7 +249,7 @@ h1{display:grid;justify-items:start;font-weight:400}
 .cd-txt{gap:22px}
 .cr{display:grid;gap:12px;width:100%;max-width:380px;padding-block:18px;border-block:1px solid var(--line)}
 .cr-big{display:flex;align-items:center;gap:16px}
-.cr-big b{font-family:var(--mono);font-weight:600;font-size:clamp(56px,9vw,92px);line-height:.9;letter-spacing:-.02em;color:var(--red);font-variant-numeric:tabular-nums;
+.cr-big b{font-family:var(--tag);font-weight:400;font-size:clamp(60px,10vw,100px);line-height:.85;letter-spacing:.02em;color:var(--red);font-variant-numeric:tabular-nums;
   text-shadow:1px 1px 0 #6e1510,0 10px 20px rgba(0,0,0,.5)}
 .cr-big span{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink);line-height:1.6;text-align:left}
 .cr-roles{font-size:clamp(9.5px,1.5vw,11px);letter-spacing:.22em;text-transform:uppercase;color:var(--dim);overflow-wrap:anywhere;line-height:1.7;text-align:left}
@@ -264,6 +264,7 @@ h1{display:grid;justify-items:start;font-weight:400}
 .cr-by{display:flex;align-items:baseline;gap:.7em;font-family:var(--tag);font-size:clamp(28px,4.4vw,36px);line-height:1;color:var(--ink)}
 .cr-by i{font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);margin-right:.4em}
 .head-cap{padding-block:14px 0}
+.head-cap .cap>span:first-child{font-size:clamp(24px,3.6vw,44px);line-height:1.15;letter-spacing:.08em;font-weight:600;flex-basis:100%;text-wrap:balance}
 .logo-zone{position:relative;display:grid;justify-items:center;margin-top:clamp(18px,3vw,30px);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .logo-zone h1{justify-items:center}
 .logo-zone .logo{font-size:clamp(110px,15vw,200px)}
@@ -1192,7 +1193,8 @@ function showCount(n, animate) {
 const DL_KEY = 'dl056-v2';
 const seen = () => { try { return +localStorage.getItem(DL_KEY) || 0; } catch (e) { return 0; } };
 const remember = n => { try { localStorage.setItem(DL_KEY, String(n)); } catch (e) {} };
-function setTotal(n, animate, confirmed = true) { dlTotal = Math.max(n, seen(), DL_BASE); if (confirmed) remember(dlTotal); showCount(dlTotal, animate); }
+let shown = 0;
+function setTotal(n, animate, confirmed = true) { dlTotal = Math.max(n, seen(), DL_BASE, shown); shown = dlTotal; if (confirmed) remember(dlTotal); showCount(dlTotal, animate); }
 // Conteggio vero: ogni tocco su FREE DOWNLOAD fa +1 su un contatore pubblico (Abacus) che risponde subito
 // con il totale aggiornato. GoatCounter e GitHub restano come riserva: si mostra sempre il numero più alto.
 const CNT = 'https://abacus.jasoncameron.dev';
