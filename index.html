@@ -1095,7 +1095,7 @@ if ('IntersectionObserver' in window) {
 }
 
 // Statistiche visite (GoatCounter: senza cookie, nessun banner necessario). Vuoto = spente
-const GC_CODE = '';
+const GC_CODE = '056';
 function track(name) { try { window.goatcounter?.count?.({ path: 'evento/' + name, title: name, event: true }); } catch (e) {} }
 if (GC_CODE && !window.claude) {
   const g = document.createElement('script');
