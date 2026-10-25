@@ -133,7 +133,12 @@ h1{display:grid;justify-items:start;font-weight:400}
 @keyframes nudge{50%{transform:translateY(4px)}}
 .dl-count{display:inline-flex;align-items:baseline;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
 .dl-count::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);align-self:center;animation:blink 2.2s ease-in-out infinite}
-.dl-count b{font-size:15px;color:var(--red);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.buy-row .dl-count{justify-self:stretch;display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:8px 10px;margin-bottom:2px}
+.buy-row .dl-count::before{display:none}
+.dl-of{font-size:11px;letter-spacing:.2em;color:var(--dim)}
+.dl-bar{grid-column:1/-1;height:3px;border-radius:3px;background:var(--line);overflow:hidden}
+.dl-bar i{display:block;height:100%;width:100%;background:var(--red);transform-origin:left;transform:scaleX(var(--f,0));transition:transform 1.2s var(--ease)}
+.dl-count b{font-size:18px;color:var(--red);font-variant-numeric:tabular-nums;letter-spacing:.04em}
 .dl-meta{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
 .dl-rule{position:relative;display:block;height:2px;background:var(--line);overflow:hidden;border-radius:2px}
 .dl-rule i{position:absolute;inset:0;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .9s var(--ease)}
@@ -259,17 +264,21 @@ h1{display:grid;justify-items:start;font-weight:400}
 .cd-col .case-hint{display:none}
 .dl-extra{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
 .dl-extra .yt{margin-top:0}
-.buy-row{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:stretch;width:100%;max-width:520px}
+.buy-row{display:grid;grid-template-columns:1fr;gap:12px;width:100%;max-width:380px}
 .buy-row .cb-main,.buy-row .cf-main{font-size:13px;letter-spacing:.12em}
 .buy-row .cb-sub{font-size:9px;letter-spacing:.12em}
-.buy-row>a{padding:16px 18px 14px;align-content:center}
+.buy-row>a{padding:17px 22px 15px;align-content:center;justify-items:start}
+.buy-row .cb-main,.buy-row .cf-main{width:100%;justify-content:space-between}
 .buy-row .cd-buy{margin-top:0}
-.cd-free{position:relative;display:grid;gap:4px;justify-items:start;padding:18px 22px 16px;border-radius:5px;border:1px solid rgba(236,235,231,.35);color:var(--ink);background:rgba(10,10,11,.5);transition:border-color .3s,background .3s,transform .45s var(--ease)}
+.cd-free{position:relative;overflow:hidden;display:grid;gap:4px;justify-items:start;border-radius:5px;background:var(--ink);color:var(--bg);
+  box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 -3px 0 rgba(0,0,0,.18) inset,0 18px 36px -14px rgba(236,235,231,.35);transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
+.cd-free::after{content:"";position:absolute;top:0;bottom:0;left:-40%;width:30%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.7),transparent);transform:skewX(-18deg);animation:shine 4.5s ease-in-out .6s infinite}
+.cd-free .cb-sub{opacity:.65}
 .cf-main{display:flex;align-items:center;gap:10px;font-size:clamp(14px,2vw,16px);font-weight:600;letter-spacing:.16em;text-transform:uppercase}
 .cf-main svg{width:18px;height:18px;color:var(--red)}
 .cf-arr{animation:nudge 1.6s var(--ease) infinite}
-.cd-free:active{transform:scale(.97)}
-@media (hover:hover){.cd-free:hover{border-color:var(--ink);background:rgba(236,235,231,.06)}}
+.cd-free:active{transform:translateY(2px) scale(.98)}
+@media (hover:hover){.cd-free:hover{transform:translateY(-3px);box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 -3px 0 rgba(0,0,0,.18) inset,0 26px 44px -14px rgba(236,235,231,.5)}}
 /* bottone acquisto: pieno, rosso, con riflesso che passa e conferma tattile */
 .cd-buy{position:relative;overflow:hidden;display:grid;gap:4px;justify-items:start;margin-top:10px;padding:18px 26px 16px;border-radius:5px;background:var(--red);color:var(--ink);
   box-shadow:0 1px 0 rgba(255,255,255,.25) inset,0 -3px 0 rgba(0,0,0,.25) inset,0 18px 36px -14px rgba(179,36,28,.85);transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
@@ -297,7 +306,7 @@ h1{display:grid;justify-items:start;font-weight:400}
 .cd-cta:active{transform:scale(.97)}
 @media (hover:hover){.cd-cta:hover{background:var(--red);border-color:var(--red);box-shadow:0 14px 30px -12px rgba(179,36,28,.8)}.cd-cta:hover b{color:var(--ink);transform:translateX(4px)}}
 .cd-handle{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
-@media(max-width:760px){.logo-zone .logo{font-size:34vw}.dl-extra{justify-content:center}.buy-row{justify-content:center}.cd-stage{--w:min(45vw,300px)}.cd-stage.is-open .case-pos{translate:calc(var(--w) * -.5) 0}.case.open.pack .cd{transform:translateX(102%)}.cd-irid{opacity:.25}.cd-bonus{justify-content:center}.cr-sum{justify-content:center}.cdx{grid-template-columns:1fr;justify-items:center;text-align:center}.cd-txt{justify-items:center}.cd-spec{margin-inline:auto}.cd-buy{justify-items:center}.cr{justify-items:center}.cr-roles{text-align:center}}
+@media(max-width:760px){.logo-zone .logo{font-size:34vw}.dl-extra{justify-content:center}.buy-row{margin-inline:auto}.buy-row>a{justify-items:center;text-align:center}.cd-stage{--w:min(45vw,300px)}.cd-stage.is-open .case-pos{translate:calc(var(--w) * -.5) 0}.case.open.pack .cd{transform:translateX(102%)}.cd-irid{opacity:.25}.cd-bonus{justify-content:center}.cr-sum{justify-content:center}.cdx{grid-template-columns:1fr;justify-items:center;text-align:center}.cd-txt{justify-items:center}.cd-spec{margin-inline:auto}.cd-buy{justify-items:center}.cr{justify-items:center}.cr-roles{text-align:center}}
 
 /* canale Telegram */
 .tg{padding-block:22px 0}
@@ -611,11 +620,11 @@ header,main,footer{overflow-x:clip}
         <p class="cr-by"><i>tutto fatto da</i><span>0</span><span>5</span><span>6</span></p>
       </div>
       <div class="buy-row" style="--s:3">
-      <a class="cd-free dl-link" href="#"><span class="cf-main"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path class="cf-arr" d="M12 3v13M6 11l6 6 6-6"/><path d="M4 21h16"/></svg>free download</span><span class="cb-sub" id="dlWord">17 tracce · mp3</span></a>
+      <span class="dl-count" id="dlCount" hidden><b id="dlNum">56</b><span class="dl-of">/ 1000 copie</span><span class="dl-bar"><i id="dlBar"></i></span></span>
+      <a class="cd-free dl-link" href="#"><span class="cf-main">free download <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path class="cf-arr" d="M12 3v13M6 11l6 6 6-6"/><path d="M4 21h16"/></svg></span><span class="cb-sub" id="dlWord">17 tracce · mp3</span></a>
       <a class="cd-buy" href="https://ig.me/m/0.56.0.56" target="_blank" rel="noopener"><span class="cb-main">voglio la mia copia <b aria-hidden="true">→</b></span><span class="cb-sub">firmata · numerata · ordini in DM</span></a>
       </div>
       <div class="dl-extra" style="--s:4">
-        <span class="dl-count" id="dlCount" hidden><b id="dlNum">56</b> download</span>
         <a class="yt" href="https://www.youtube.com/playlist?list=PLD1_sGFjZX0E" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg>
           <span>ascoltalo su youtube</span><b aria-hidden="true">↗</b>
@@ -1093,6 +1102,7 @@ let dlTotal = null, relZip = null;
 function showCount(n, animate) {
   const el = document.getElementById('dlNum'), box = document.getElementById('dlCount');
   box.hidden = false;
+  document.getElementById('dlBar').style.setProperty('--f', Math.min(1, n / 1000));
   if (!animate || reduce) { el.textContent = n; return; }
   const from = +el.textContent || DL_BASE, t0 = performance.now();
   const step = now => { const p = Math.min(1, (now - t0) / 1200); el.textContent = Math.round(from + (n - from) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
