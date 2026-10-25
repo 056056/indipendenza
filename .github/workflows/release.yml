@@ -1,0 +1,24 @@
+# Pubblica lo ZIP dell'album come release v1.0: GitHub conta da solo ogni download
+name: release-album
+on:
+  push:
+    branches: [main]
+    paths: ['056-IN.DIPENDENZA.zip', '.github/workflows/release.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Crea o aggiorna la release v1.0
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # se la release esiste già non la tocchiamo: sostituire il file azzererebbe il contatore
+          if gh release view v1.0 >/dev/null 2>&1; then
+            echo "release v1.0 già presente"
+          else
+            gh release create v1.0 056-IN.DIPENDENZA.zip --title "056 – IN.DIPENDENZA" --notes "Free download · 17 tracce · 2027"
+          fi

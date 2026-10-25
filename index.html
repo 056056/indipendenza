@@ -127,6 +127,9 @@ h1{display:grid;justify-items:start;font-weight:400}
 .dl-word{display:inline-flex;align-items:center;gap:10px;font-size:clamp(13px,2.4vw,15px);font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--ink)}
 .dl-arrow{width:18px;height:18px;color:var(--red);flex-shrink:0;animation:nudge 1.8s var(--ease) infinite}
 @keyframes nudge{50%{transform:translateY(4px)}}
+.dl-count{display:inline-flex;align-items:baseline;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+.dl-count::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);align-self:center;animation:blink 2.2s ease-in-out infinite}
+.dl-count b{font-size:15px;color:var(--red);font-variant-numeric:tabular-nums;letter-spacing:.04em}
 .dl-meta{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
 .dl-rule{position:relative;display:block;height:2px;background:var(--line);overflow:hidden;border-radius:2px}
 .dl-rule i{position:absolute;inset:0;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .9s var(--ease)}
@@ -552,6 +555,7 @@ header,main,footer{overflow-x:clip}
         </span>
         <span class="dl-rule"><i></i></span>
         <span class="dl-meta">17 tracce · 2027 · copertina inclusa</span>
+        <span class="dl-count" id="dlCount" hidden><b id="dlNum">56</b> download</span>
       </span>
       <svg class="wet" id="wet" aria-hidden="true"><g id="wetDrips" stroke="currentColor" stroke-linecap="round" fill="currentColor"></g></svg>
     </a>
@@ -791,8 +795,9 @@ function setDl(text, p) {
 }
 async function startDownload() {
   if (!window.claude) {
-    const a = document.createElement('a'); a.href = ZIP_NAME; a.download = ZIP_NAME;
+    const a = document.createElement('a'); a.href = relZip || ZIP_NAME; a.download = ZIP_NAME;
     document.body.appendChild(a); a.click(); a.remove();
+    if (dlTotal != null) { dlTotal++; showCount(dlTotal, true); }
     setDl('download avviato', 1); toast('Download avviato');
     if (isIOS) { const g = document.getElementById('ios'); g.open = true; setTimeout(() => g.scrollIntoView({ behavior: 'smooth', block: 'center' }), 1400); }
     setTimeout(() => setDl("scarica l'album", null), 2500);
@@ -1084,6 +1089,32 @@ if ('IntersectionObserver' in window && !reduce && cdTxt.getBoundingClientRect()
 if ('IntersectionObserver' in window) {
   const idleIO = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('idle', !e.isIntersecting)), { rootMargin: '120px 0px' });
   document.querySelectorAll('header, #download, #copia, #tracklist, .tape, footer').forEach(el => idleIO.observe(el));
+}
+
+// Contatore download: parte da 56 e somma i download reali che GitHub conta sulla release
+const DL_BASE = 56;
+const REL_API = 'https://api.github.com/repos/056056/indipendenza/releases/tags/v1.0';
+const REL_ZIP = 'https://github.com/056056/indipendenza/releases/download/v1.0/056-IN.DIPENDENZA.zip';
+let dlTotal = null, relZip = null;
+function showCount(n, animate) {
+  const el = document.getElementById('dlNum'), box = document.getElementById('dlCount');
+  box.hidden = false;
+  if (!animate || reduce) { el.textContent = n; return; }
+  const from = +el.textContent || DL_BASE, t0 = performance.now();
+  const step = now => { const p = Math.min(1, (now - t0) / 1200); el.textContent = Math.round(from + (n - from) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+if (!window.claude) {
+  fetch(REL_API, { headers: { Accept: 'application/vnd.github+json' } })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(rel => {
+      const a = (rel.assets || []).find(x => /\.zip$/i.test(x.name));
+      if (!a) return;
+      relZip = REL_ZIP;
+      dlTotal = DL_BASE + a.download_count;
+      showCount(dlTotal, true);
+    })
+    .catch(() => {});
 }
 
 // Ruoli: si accendono uno dopo l'altro quando arrivi alla sezione
