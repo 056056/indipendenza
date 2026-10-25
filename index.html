@@ -133,11 +133,17 @@ h1{display:grid;justify-items:start;font-weight:400}
 @keyframes nudge{50%{transform:translateY(4px)}}
 .dl-count{display:inline-flex;align-items:baseline;gap:8px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
 .dl-count::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);align-self:center;animation:blink 2.2s ease-in-out infinite}
-.buy-row .dl-count{justify-self:stretch;display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:8px 10px;margin-bottom:2px}
+.buy-row .dl-count{justify-self:stretch;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:10px 14px;margin-bottom:2px}
 .buy-row .dl-count::before{display:none}
-.dl-of{font-size:11px;letter-spacing:.2em;color:var(--dim)}
+.dl-of{text-align:left;font-size:10.5px;line-height:1.5;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
 .dl-bar{grid-column:1/-1;height:3px;border-radius:3px;background:var(--line);overflow:hidden}
 .dl-bar i{display:block;height:100%;width:100%;background:var(--red);transform-origin:left;transform:scaleX(var(--f,0));transition:transform 1.2s var(--ease)}
+.odo{display:inline-flex;gap:3px;padding:5px;border-radius:6px;background:linear-gradient(180deg,#050505,#141414);box-shadow:inset 0 1px 3px rgba(0,0,0,.9),0 0 0 1px rgba(236,235,231,.12)}
+.od{position:relative;display:block;width:.72em;height:1.25em;overflow:hidden;border-radius:3px;background:linear-gradient(180deg,#1c1c1d 0,#0d0d0e 49%,#050505 51%,#141415 100%);font-family:var(--mono);font-size:28px;font-weight:600;line-height:1.25em;text-align:center;color:var(--red);text-shadow:0 0 10px rgba(225,60,45,.7)}
+.od::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.8)}
+.od.lead{color:rgba(179,36,28,.28);text-shadow:none}
+.ods{display:block;transition:transform 1s cubic-bezier(.2,.9,.25,1)}
+.ods i{display:block;font-style:normal;height:1.25em}
 .dl-count b{font-size:18px;color:var(--red);font-variant-numeric:tabular-nums;letter-spacing:.04em}
 .dl-meta{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
 .dl-rule{position:relative;display:block;height:2px;background:var(--line);overflow:hidden;border-radius:2px}
@@ -620,7 +626,7 @@ header,main,footer{overflow-x:clip}
         <p class="cr-by"><i>tutto fatto da</i><span>0</span><span>5</span><span>6</span></p>
       </div>
       <div class="buy-row" style="--s:3">
-      <span class="dl-count" id="dlCount" hidden><b id="dlNum">56</b><span class="dl-of">/ 1000 copie</span><span class="dl-bar"><i id="dlBar"></i></span></span>
+      <span class="dl-count" id="dlCount" hidden><b id="dlNum" class="odo" aria-label="56"></b><span class="dl-of">download<br>/ 1000 copie</span><span class="dl-bar"><i id="dlBar"></i></span></span>
       <a class="cd-free dl-link" href="#"><span class="cf-main">free download <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path class="cf-arr" d="M12 3v13M6 11l6 6 6-6"/><path d="M4 21h16"/></svg></span><span class="cb-sub" id="dlWord">17 tracce · mp3</span></a>
       <a class="cd-buy" href="https://ig.me/m/0.56.0.56" target="_blank" rel="noopener"><span class="cb-main">voglio la mia copia <b aria-hidden="true">→</b></span><span class="cb-sub">firmata · numerata · ordini in DM</span></a>
       </div>
@@ -812,7 +818,7 @@ async function startDownload() {
   if (!window.claude) {
     const a = document.createElement('a'); a.href = relZip || ZIP_NAME; a.download = ZIP_NAME;
     document.body.appendChild(a); a.click(); a.remove();
-    if (dlTotal != null) setTotal(dlTotal + 1, true);
+    if (dlTotal != null) setTotal(dlTotal + 1, true, false);
     setDl('download avviato', 1); toast('Download avviato');
     if (isIOS) { const g = document.getElementById('ios'); g.open = true; setTimeout(() => g.scrollIntoView({ behavior: 'smooth', block: 'center' }), 1400); }
     setTimeout(() => setDl('17 tracce · mp3', null), 2500);
@@ -1118,21 +1124,31 @@ const DL_BASE = 56;
 const REL_API = 'https://api.github.com/repos/056056/indipendenza/releases/tags/v1.0';
 const REL_ZIP = 'https://github.com/056056/indipendenza/releases/download/v1.0/056-IN.DIPENDENZA.zip';
 let dlTotal = null, relZip = null;
+// display a rulli: ogni cifra è una colonna 0–9 che scorre fino al numero giusto
 function showCount(n, animate) {
   const el = document.getElementById('dlNum'), box = document.getElementById('dlCount');
   box.hidden = false;
   document.getElementById('dlBar').style.setProperty('--f', Math.min(1, n / 1000));
-  if (!animate || reduce) { el.textContent = n; return; }
-  const from = +el.textContent || DL_BASE, t0 = performance.now();
-  const step = now => { const p = Math.min(1, (now - t0) / 1200); el.textContent = Math.round(from + (n - from) * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
-  requestAnimationFrame(step);
+  const txt = String(n).padStart(4, '0');
+  el.setAttribute('aria-label', n + ' download');
+  while (el.children.length < txt.length) {
+    const d = document.createElement('span'); d.className = 'od';
+    d.innerHTML = '<span class="ods">' + '0123456789'.split('').map(x => '<i>' + x + '</i>').join('') + '</span>';
+    el.appendChild(d);
+  }
+  [...el.children].forEach((d, i) => {
+    const strip = d.firstChild;
+    strip.style.transitionDuration = (!animate || reduce) ? '0s' : (0.9 + i * 0.25) + 's';
+    strip.style.transform = `translateY(${-txt[i] * 10}%)`;
+    d.classList.toggle('lead', txt.slice(0, i + 1).replace(/0/g, '') === '');
+  });
 }
 // Il numero non scende mai: GitHub aggiorna i conteggi con qualche minuto di ritardo,
 // quindi si mostra il più alto tra il dato di GitHub e l'ultimo visto su questo telefono
-const DL_KEY = 'dl056';
+const DL_KEY = 'dl056-v2';
 const seen = () => { try { return +localStorage.getItem(DL_KEY) || 0; } catch (e) { return 0; } };
 const remember = n => { try { localStorage.setItem(DL_KEY, String(n)); } catch (e) {} };
-function setTotal(n, animate) { dlTotal = Math.max(n, seen(), DL_BASE); remember(dlTotal); showCount(dlTotal, animate); }
+function setTotal(n, animate, confirmed = true) { dlTotal = Math.max(n, seen(), DL_BASE); if (confirmed) remember(dlTotal); showCount(dlTotal, animate); }
 // prima il file dello stesso sito (non lo blocca nessun browser), poi GitHub, altrimenti l'ultimo numero visto o 56
 const relCount = rel => { const a = (rel.assets || []).find(x => /\.zip$/i.test(x.name)); return a ? a.download_count : null; };
 function loadCount() {
