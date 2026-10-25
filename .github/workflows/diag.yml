@@ -1,0 +1,26 @@
+# Controllo una tantum dei servizi di conteggio (lanciato a mano o da push di questo file)
+name: diag-contatori
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/diag.yml']
+permissions:
+  contents: write
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prova i servizi
+        run: |
+          {
+            echo "== abacus get (chiave vera)"; curl -s -m 20 -i https://abacus.jasoncameron.dev/get/056-indipendenza/download | grep -iE '^HTTP|access-control|^\{' ; echo
+            echo "== abacus hit (chiave di test)"; curl -s -m 20 https://abacus.jasoncameron.dev/hit/056-indipendenza/diagtest; echo
+            echo "== abacus hit di nuovo"; curl -s -m 20 https://abacus.jasoncameron.dev/hit/056-indipendenza/diagtest; echo
+            echo "== goatcounter counter"; curl -s -m 20 -i -H 'Origin: https://056056.github.io' "https://056.goatcounter.com/counter/evento%2Fdownload.json" | grep -iE '^HTTP|access-control|^\{|count'; echo
+            echo "== goatcounter count.js"; curl -s -m 20 -o /dev/null -w "%{http_code}\n" https://gc.zgo.at/count.js
+          } > diag.txt 2>&1
+          cat diag.txt
+          git config user.name "github-actions[bot]"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add diag.txt; git commit -m "diag contatori" && git push
