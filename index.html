@@ -251,6 +251,10 @@ h1{display:grid;justify-items:start;font-weight:400}
 .logo-zone{position:relative;display:grid;justify-items:center;margin-top:clamp(18px,3vw,30px);cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .logo-zone h1{justify-items:center}
 .logo-zone .logo{font-size:clamp(110px,15vw,200px)}
+.logo.free{overflow:visible}
+.thanks{font-family:var(--hand);font-size:clamp(30px,4.4vw,44px);line-height:1;color:var(--ink);transform:rotate(-3deg);margin-top:14px;
+  clip-path:inset(-30% 100% -30% 0);visibility:hidden}
+.thanks.show{visibility:visible;animation:write 1.6s cubic-bezier(.65,0,.35,1) .35s forwards}
 .logo-zone .hand-t{font-size:clamp(16px,2.4vw,26px);margin:.9em 0 0 .3em}
 .cd-col .case-hint{display:none}
 .dl-extra{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
@@ -531,6 +535,7 @@ header,main,footer{overflow-x:clip}
   .paintover{clip-path:none}
   .backdrop img{opacity:.42}
   .hand-t{clip-path:none}
+  .thanks.show{clip-path:none}
 }
 </style>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
@@ -592,6 +597,7 @@ header,main,footer{overflow-x:clip}
     </div>
     <div class="logo-zone" id="logoZone">
       <h1 aria-label="056 – IN.DIPENDENZA"><span class="logo" id="logo" aria-hidden="true">056</span><span class="hand-t" aria-hidden="true">In.dipendenza</span></h1>
+      <p class="thanks" id="thanks" aria-live="polite">grazie del supporto</p>
       <svg class="wet" id="wet" aria-hidden="true"><g id="wetDrips" stroke="currentColor" stroke-linecap="round" fill="currentColor"></g></svg>
     </div>
     </div>
@@ -728,6 +734,7 @@ document.querySelectorAll('.dl-link').forEach(a => {
   if (external) a.href = DOWNLOAD_URL;
   else { a.href = '#'; a.removeAttribute('target'); a.addEventListener('click', e => {
     e.preventDefault(); burst(); wave(); startDownload();
+    const th = document.getElementById('thanks'); th.classList.remove('show'); void th.offsetWidth; th.classList.add('show');
     // su telefono il 056 sta più in alto: lo porta in vista mentre cola
     const r = zone.getBoundingClientRect();
     if (r.bottom < 0 || r.top > innerHeight) zone.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
@@ -985,6 +992,10 @@ function burst() {
 }
 
 digits.forEach(c => c.addEventListener('animationend', () => { c.style.animation = 'none'; }, { once: true }));
+// finita l'entrata, il 056 non viene più ritagliato: i salti delle cifre restano interi
+const freeLogo = () => logo.classList.add('free');
+if (reduce) freeLogo(); else digits[digits.length - 1].addEventListener('animationend', freeLogo, { once: true });
+setTimeout(freeLogo, 4000);
 document.fonts.ready.then(() => setTimeout(mapGlyphs, reduce ? 0 : 1700));
 let rz;
 let lastW = innerWidth;
