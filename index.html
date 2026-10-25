@@ -1163,7 +1163,13 @@ function loadCount() {
         .catch(() => { if (dlTotal == null) setTotal(DL_BASE, false); });
     });
 }
-if (!window.claude) loadCount();
+if (!window.claude) {
+  loadCount();
+  // aggiornamento dal vivo mentre la pagina è aperta: se qualcuno scarica, i rulli girano da soli.
+  // ogni 90 s (GitHub concede 60 letture l'ora per visitatore), in pausa quando la scheda non è visibile
+  let liveT = setInterval(() => { if (!document.hidden) loadCount(); }, 90000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) loadCount(); });
+}
 
 // Ruoli: si accendono uno dopo l'altro quando arrivi alla sezione
 const crGrid = document.getElementById('crGrid');
