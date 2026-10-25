@@ -446,6 +446,14 @@ h2{font-family:var(--hand);font-weight:400;font-size:clamp(46px,10vw,76px);line-
 
 /* tracklist */
 .tl ol{list-style:none;border-top:1px solid var(--line)}
+.tl li.locked{display:block;padding:0}
+.tl li.locked .k{white-space:nowrap}
+.tl li.locked a{display:grid;grid-template-columns:30px 20px 1fr auto;align-items:center;gap:12px;padding:16px 4px;color:inherit}
+.tl li.locked .t{color:var(--dim);filter:blur(.6px);letter-spacing:.06em}
+.tl li.locked .pl{border-color:rgba(179,36,28,.6);color:var(--red)}
+.tl li.locked .pl svg{width:9px;height:9px;margin:0}
+.tl li.locked .k{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;padding:4px 8px;border:1px solid rgba(179,36,28,.55);border-radius:999px;color:var(--red)}
+@media (hover:hover){.tl li.locked:hover .t{filter:none;color:var(--ink)}}
 .tl li{position:relative;display:grid;grid-template-columns:30px 20px 1fr auto;align-items:center;gap:12px;padding:16px 4px;border-bottom:1px solid var(--line);transition:padding .45s var(--ease),background .45s}
 .tl li::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--red);transform:scaleY(0);transition:transform .45s var(--ease)}
 .tl li:hover{padding-left:18px;background:linear-gradient(90deg,var(--red-soft),transparent 60%)}
@@ -535,7 +543,7 @@ header,main,footer{overflow-x:clip}
   .sticky{left:auto;width:380px;right:calc(28px + env(safe-area-inset-right,0px))}
   .tl ol{columns:2;column-gap:40px;border-top:0}
   .tl li{break-inside:avoid}
-  .tl li:nth-child(1),.tl li:nth-child(10){border-top:1px solid var(--line)}
+  .tl li:nth-child(1),.tl li:nth-child(12){border-top:1px solid var(--line)}
 }
 @media(max-width:600px){
   .cap{margin-bottom:14px;font-size:13px;letter-spacing:.12em;line-height:1.5}
@@ -660,7 +668,7 @@ header,main,footer{overflow-x:clip}
   </div></div>
 
   <section class="wrap tl" id="tracklist">
-    <div class="sec-h rv"><h2>Tracklist</h2><span class="lbl">tocca · 9s di ascolto</span></div>
+    <div class="sec-h rv"><h2>Tracklist</h2><span class="lbl">tocca · 9s di ascolto · +5 solo cd</span></div>
     <ol>
       <li class="rv" role="button" tabindex="0" data-n="01"><span class="n">01</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">.56</span><span class="k">skit Inoki</span><span class="tp" aria-hidden="true"></span></li>
       <li class="rv" role="button" tabindex="0" data-n="02"><span class="n">02</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Intro</span><span class="tp" aria-hidden="true"></span></li>
@@ -679,6 +687,11 @@ header,main,footer{overflow-x:clip}
       <li class="rv" role="button" tabindex="0" data-n="15"><span class="n">15</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Next gen</span><span class="tp" aria-hidden="true"></span></li>
       <li class="rv" role="button" tabindex="0" data-n="16"><span class="n">16</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Feeling like this</span><span class="tp" aria-hidden="true"></span></li>
       <li class="rv" role="button" tabindex="0" data-n="17"><span class="n">17</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg><span class="eq"><i></i><i></i><i></i></span></span><span class="t">Sun is down</span><span class="tp" aria-hidden="true"></span></li>
+      <li class="rv locked"><a href="https://ig.me/m/0.56.0.56" target="_blank" rel="noopener" aria-label="Traccia bonus 18: solo sul CD fisico, richiedilo in DM"><span class="n">18</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3.5 5V3.8a2.5 2.5 0 0 1 5 0V5" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="2.5" y="5" width="7" height="5.2" rx="1" fill="currentColor"/></svg></span><span class="t">bonus track</span><span class="k">solo cd</span></a></li>
+      <li class="rv locked"><a href="https://ig.me/m/0.56.0.56" target="_blank" rel="noopener" aria-label="Traccia bonus 19: solo sul CD fisico, richiedilo in DM"><span class="n">19</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3.5 5V3.8a2.5 2.5 0 0 1 5 0V5" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="2.5" y="5" width="7" height="5.2" rx="1" fill="currentColor"/></svg></span><span class="t">bonus track</span><span class="k">solo cd</span></a></li>
+      <li class="rv locked"><a href="https://ig.me/m/0.56.0.56" target="_blank" rel="noopener" aria-label="Traccia bonus 20: solo sul CD fisico, richiedilo in DM"><span class="n">20</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3.5 5V3.8a2.5 2.5 0 0 1 5 0V5" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="2.5" y="5" width="7" height="5.2" rx="1" fill="currentColor"/></svg></span><span class="t">bonus track</span><span class="k">solo cd</span></a></li>
+      <li class="rv locked"><a href="https://ig.me/m/0.56.0.56" target="_blank" rel="noopener" aria-label="Traccia bonus 21: solo sul CD fisico, richiedilo in DM"><span class="n">21</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3.5 5V3.8a2.5 2.5 0 0 1 5 0V5" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="2.5" y="5" width="7" height="5.2" rx="1" fill="currentColor"/></svg></span><span class="t">bonus track</span><span class="k">solo cd</span></a></li>
+      <li class="rv locked"><a href="https://ig.me/m/0.56.0.56" target="_blank" rel="noopener" aria-label="Traccia bonus 22: solo sul CD fisico, richiedilo in DM"><span class="n">22</span><span class="pl" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M3.5 5V3.8a2.5 2.5 0 0 1 5 0V5" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="2.5" y="5" width="7" height="5.2" rx="1" fill="currentColor"/></svg></span><span class="t">bonus track</span><span class="k">solo cd</span></a></li>
     </ol>
   </section>
 
@@ -1125,10 +1138,11 @@ if (GC_CODE && !window.claude) {
   document.head.appendChild(g);
 }
 document.addEventListener('click', e => {
-  const t = e.target.closest('.cd-free, .sticky, .cd-buy, .yt, .tl li[data-n], #logoZone, #cdStage');
+  const t = e.target.closest('.cd-free, .sticky, .cd-buy, .yt, .tl li.locked, .tl li[data-n], #logoZone, #cdStage');
   if (!t) return;
   if (t.matches('.cd-free, .sticky')) track('download');
   else if (t.matches('.cd-buy')) track('richiesta-cd');
+  else if (t.matches('.tl li.locked')) track('bonus-bloccata');
   else if (t.matches('.yt')) track('youtube');
   else if (t.matches('.tl li')) track('anteprima-' + t.dataset.n);
   else if (t.matches('#logoZone')) track('tocco-056');
