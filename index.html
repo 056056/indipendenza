@@ -543,6 +543,16 @@ footer{padding-block:clamp(70px,12vw,120px) calc(120px + env(safe-area-inset-bot
 .paint .drop,.wet .drop{opacity:0;animation:fall var(--f,2.4s) cubic-bezier(.55,0,1,.45) var(--w,0s) infinite}
 @keyframes fall{0%{opacity:0;transform:translateY(0)}8%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translateY(var(--fy,120px))}}
 footer p{margin-top:14px}
+.copy{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;max-width:520px;margin:clamp(40px,7vw,64px) auto 0}
+.cp-line{height:1px;background:linear-gradient(90deg,transparent,rgba(236,235,231,.25))}
+.cp-line:last-child{background:linear-gradient(270deg,transparent,rgba(236,235,231,.25))}
+.copy p{margin:0;display:flex;align-items:center;gap:10px;font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+.cp-c{display:grid;place-items:center;width:22px;height:22px;border:1px solid rgba(236,235,231,.35);border-radius:50%;font-size:12px;letter-spacing:0;color:var(--ink)}
+.copy b{font-family:var(--tag);font-weight:400;font-size:20px;letter-spacing:.04em;color:var(--ink)}
+.cp-sep{color:var(--red)}
+.copy p{font-size:clamp(9.5px,2.6vw,11px);letter-spacing:clamp(.12em,.6vw,.22em)}
+@media(max-width:420px){.copy{grid-template-columns:1fr}.cp-line{display:none}.copy p{justify-content:center}}
+.cp-rr{margin-top:10px!important;font-size:9.5px;letter-spacing:.32em;text-transform:uppercase;color:rgba(236,235,231,.35)}
 
 /* barra fissa */
 .sticky{position:fixed;z-index:80;left:calc(12px + env(safe-area-inset-left,0px));right:calc(12px + env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));
@@ -769,7 +779,8 @@ header,main,footer{overflow-x:clip}
     </div>
     <div class="hand-s">In.dipendenza</div>
   </div>
-  <p class="lbl">© 2027 · IN.DIPENDENZA · Gratis</p>
+  <div class="copy"><span class="cp-line"></span><p><span class="cp-c" aria-hidden="true">©</span><span class="cp-y">2027</span><b>056</b><span class="cp-sep">·</span><span>IN.DIPENDENZA</span></p><span class="cp-line"></span></div>
+  <p class="cp-rr">all rights reserved</p>
 </footer>
 
 <div class="ctag" id="ctag" aria-hidden="true">
@@ -1147,8 +1158,8 @@ if ('IntersectionObserver' in window) {
 
 // Link Instagram: apre sempre l'app.
 // iPhone fuori da Instagram: ig.me (link universale) apre la chat nell'app.
-// iPhone dentro Instagram/Facebook: instagram:// apre il profilo nell'app, poi "Messaggio".
-// Android: intent:// forza l'app Instagram, con ig.me come riserva se l'app non c'è.
+// iPhone dentro Instagram/Facebook: instagram:// prova la chat, poi il profilo nell'app.
+// Android: intent:// apre ig.me nell'app Instagram (chat diretta), con ig.me nel browser come riserva.
 const IG_USER = '0.56.0.56';
 const UA = navigator.userAgent;
 const inApp = /Instagram|FBAN|FBAV|FB_IAB/i.test(UA);
@@ -1158,18 +1169,23 @@ function openInstagram(e) {
   if (!isAndroid && !inApp) return; // il link normale fa già il suo lavoro
   e.preventDefault();
   if (isAndroid) {
-    location.href = `intent://instagram.com/_u/${IG_USER}/#Intent;package=com.instagram.android;scheme=https;S.browser_fallback_url=${encodeURIComponent(IG_DM)};end`;
+    location.href = `intent://ig.me/m/${IG_USER}#Intent;package=com.instagram.android;scheme=https;S.browser_fallback_url=${encodeURIComponent(IG_DM)};end`;
     return;
   }
-  toast('Si apre il profilo: tocca “Messaggio”');
+  // dentro Instagram su iPhone: prima la chat diretta nell'app, poi il profilo se la chat non si apre
   let left = false;
   const onHide = () => { left = true; };
   document.addEventListener('visibilitychange', onHide, { once: true });
-  location.href = `instagram://user?username=${IG_USER}`;
+  location.href = `instagram://direct?username=${IG_USER}`;
   setTimeout(() => {
-    document.removeEventListener('visibilitychange', onHide);
-    if (!left && !document.hidden) location.href = `https://www.instagram.com/${IG_USER}/`;
-  }, 900);
+    if (left || document.hidden) return;
+    toast('Si apre il profilo: tocca “Messaggio”');
+    location.href = `instagram://user?username=${IG_USER}`;
+    setTimeout(() => {
+      document.removeEventListener('visibilitychange', onHide);
+      if (!left && !document.hidden) location.href = `https://www.instagram.com/${IG_USER}/`;
+    }, 900);
+  }, 700);
 }
 document.querySelectorAll(`a[href="${IG_DM}"]`).forEach(a => {
   if (inApp) a.removeAttribute('target');
