@@ -1145,6 +1145,29 @@ if ('IntersectionObserver' in window) {
   document.querySelectorAll('header, #download, #copia, #tracklist, .tape, footer').forEach(el => idleIO.observe(el));
 }
 
+// Link Instagram: dentro l'app Instagram ig.me apre il login web nel browser interno.
+// Lì si usa il link interno dell'app (instagram://) e, se non risponde, il profilo instagram.com,
+// che l'app apre da sola come pagina nativa: da lì "Messaggio" porta alla chat.
+const IG_USER = '0.56.0.56';
+const inInstagram = /Instagram/i.test(navigator.userAgent);
+const inFacebookApp = /FBAN|FBAV|FB_IAB/i.test(navigator.userAgent);
+if (inInstagram || inFacebookApp) {
+  document.querySelectorAll('a[href^="https://ig.me/m/"]').forEach(a => {
+    a.href = `https://www.instagram.com/${IG_USER}/`;
+    a.removeAttribute('target');
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      toast('Si apre il profilo: tocca “Messaggio”');
+      const web = `https://www.instagram.com/${IG_USER}/`;
+      let left = false;
+      const onHide = () => { left = true; };
+      document.addEventListener('visibilitychange', onHide, { once: true });
+      location.href = `instagram://user?username=${IG_USER}`;
+      setTimeout(() => { document.removeEventListener('visibilitychange', onHide); if (!left && !document.hidden) location.href = web; }, 900);
+    });
+  });
+}
+
 // Statistiche visite (GoatCounter: senza cookie, nessun banner necessario). Vuoto = spente
 const GC_CODE = '056';
 function track(name) { try { window.goatcounter?.count?.({ path: 'evento/' + name, title: name, event: true }); } catch (e) {} }
