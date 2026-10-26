@@ -819,9 +819,6 @@ document.querySelectorAll('.dl-link').forEach(a => {
   else { a.href = '#'; a.removeAttribute('target'); a.addEventListener('click', e => {
     e.preventDefault(); burst(); wave(); startDownload();
     const th = document.getElementById('thanks'); th.classList.remove('show'); void th.offsetWidth; th.classList.add('show');
-    // su telefono il 056 sta più in alto: lo porta in vista mentre cola
-    const r = zone.getBoundingClientRect();
-    if (r.bottom < 0 || r.top > innerHeight) zone.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
   }); }
 });
 
@@ -890,7 +887,8 @@ async function startDownload() {
     if (dlTotal != null) setTotal(dlTotal + 1, true, false);
     hitDownload();
     setDl('download avviato', 1); toast('Download avviato');
-    if (isIOS) { const g = document.getElementById('ios'); g.open = true; setTimeout(() => g.scrollIntoView({ behavior: 'smooth', block: 'center' }), 1400); }
+    // la pagina resta ferma dove sei: la guida per iPhone si apre già pronta, senza spostarti
+    if (isIOS) document.getElementById('ios').open = true;
     setTimeout(() => setDl('17 tracce · mp3', null), 2500);
     return;
   }
@@ -905,7 +903,8 @@ async function startDownload() {
     setDl('conferma il download', 1);
     await dl.save({ filename: ZIP_NAME, data: zipBlob });
     toast('Album scaricato');
-    if (isIOS) { const g = document.getElementById('ios'); g.open = true; setTimeout(() => g.scrollIntoView({ behavior: 'smooth', block: 'center' }), 1400); }
+    // la pagina resta ferma dove sei: la guida per iPhone si apre già pronta, senza spostarti
+    if (isIOS) document.getElementById('ios').open = true;
   } catch (err) {
     if (err?.code === 'declined') toast('Download annullato');
     else if (err?.code === 'rate_limited') toast('Un attimo, riprova');
