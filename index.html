@@ -1145,28 +1145,36 @@ if ('IntersectionObserver' in window) {
   document.querySelectorAll('header, #download, #copia, #tracklist, .tape, footer').forEach(el => idleIO.observe(el));
 }
 
-// Link Instagram: dentro l'app Instagram ig.me apre il login web nel browser interno.
-// Lì si usa il link interno dell'app (instagram://) e, se non risponde, il profilo instagram.com,
-// che l'app apre da sola come pagina nativa: da lì "Messaggio" porta alla chat.
+// Link Instagram: apre sempre l'app.
+// iPhone fuori da Instagram: ig.me (link universale) apre la chat nell'app.
+// iPhone dentro Instagram/Facebook: instagram:// apre il profilo nell'app, poi "Messaggio".
+// Android: intent:// forza l'app Instagram, con ig.me come riserva se l'app non c'è.
 const IG_USER = '0.56.0.56';
-const inInstagram = /Instagram/i.test(navigator.userAgent);
-const inFacebookApp = /FBAN|FBAV|FB_IAB/i.test(navigator.userAgent);
-if (inInstagram || inFacebookApp) {
-  document.querySelectorAll('a[href^="https://ig.me/m/"]').forEach(a => {
-    a.href = `https://www.instagram.com/${IG_USER}/`;
-    a.removeAttribute('target');
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      toast('Si apre il profilo: tocca “Messaggio”');
-      const web = `https://www.instagram.com/${IG_USER}/`;
-      let left = false;
-      const onHide = () => { left = true; };
-      document.addEventListener('visibilitychange', onHide, { once: true });
-      location.href = `instagram://user?username=${IG_USER}`;
-      setTimeout(() => { document.removeEventListener('visibilitychange', onHide); if (!left && !document.hidden) location.href = web; }, 900);
-    });
-  });
+const UA = navigator.userAgent;
+const inApp = /Instagram|FBAN|FBAV|FB_IAB/i.test(UA);
+const isAndroid = /Android/i.test(UA);
+const IG_DM = `https://ig.me/m/${IG_USER}`;
+function openInstagram(e) {
+  if (!isAndroid && !inApp) return; // il link normale fa già il suo lavoro
+  e.preventDefault();
+  if (isAndroid) {
+    location.href = `intent://instagram.com/_u/${IG_USER}/#Intent;package=com.instagram.android;scheme=https;S.browser_fallback_url=${encodeURIComponent(IG_DM)};end`;
+    return;
+  }
+  toast('Si apre il profilo: tocca “Messaggio”');
+  let left = false;
+  const onHide = () => { left = true; };
+  document.addEventListener('visibilitychange', onHide, { once: true });
+  location.href = `instagram://user?username=${IG_USER}`;
+  setTimeout(() => {
+    document.removeEventListener('visibilitychange', onHide);
+    if (!left && !document.hidden) location.href = `https://www.instagram.com/${IG_USER}/`;
+  }, 900);
 }
+document.querySelectorAll(`a[href="${IG_DM}"]`).forEach(a => {
+  if (inApp) a.removeAttribute('target');
+  a.addEventListener('click', openInstagram);
+});
 
 // Statistiche visite (GoatCounter: senza cookie, nessun banner necessario). Vuoto = spente
 const GC_CODE = '056';
